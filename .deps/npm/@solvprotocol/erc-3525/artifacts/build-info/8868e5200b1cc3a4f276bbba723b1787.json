@@ -1,0 +1,405 @@
+{
+	"id": "8868e5200b1cc3a4f276bbba723b1787",
+	"_format": "hh-sol-build-info-1",
+	"solcVersion": "0.8.22",
+	"solcLongVersion": "0.8.22+commit.4fc1097e",
+	"input": {
+		"language": "Solidity",
+		"sources": {
+			".deps/npm/@solvprotocol/erc-3525/IERC3525Receiver.sol": {
+				"content": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.8.1;\n\n/**\n * @title EIP-3525 token receiver interface\n * @dev Interface for a smart contract that wants to be informed by EIP-3525 contracts when \n *  receiving values from ANY addresses or EIP-3525 tokens.\n * Note: the EIP-165 identifier for this interface is 0x009ce20b.\n */\ninterface IERC3525Receiver {\n    /**\n     * @notice Handle the receipt of an EIP-3525 token value.\n     * @dev An EIP-3525 smart contract MUST check whether this function is implemented by the \n     *  recipient contract, if the recipient contract implements this function, the EIP-3525 \n     *  contract MUST call this function after a value transfer (i.e. `transferFrom(uint256,\n     *  uint256,uint256,bytes)`).\n     *  MUST return 0x009ce20b (i.e. `bytes4(keccak256('onERC3525Received(address,uint256,uint256,\n     *  uint256,bytes)'))`) if the transfer is accepted.\n     *  MUST revert or return any value other than 0x009ce20b if the transfer is rejected.\n     * @param _operator The address which triggered the transfer\n     * @param _fromTokenId The token id to transfer value from\n     * @param _toTokenId The token id to transfer value to\n     * @param _value The transferred value\n     * @param _data Additional data with no specified format\n     * @return `bytes4(keccak256('onERC3525Received(address,uint256,uint256,uint256,bytes)'))` \n     *  unless the transfer is rejected.\n     */\n    function onERC3525Received(address _operator, uint256 _fromTokenId, uint256 _toTokenId, uint256 _value, bytes calldata _data) external returns (bytes4);\n\n}"
+			}
+		},
+		"settings": {
+			"optimizer": {
+				"enabled": false,
+				"runs": 200
+			},
+			"outputSelection": {
+				"*": {
+					"": [
+						"ast"
+					],
+					"*": [
+						"abi",
+						"metadata",
+						"devdoc",
+						"userdoc",
+						"storageLayout",
+						"evm.legacyAssembly",
+						"evm.bytecode",
+						"evm.deployedBytecode",
+						"evm.methodIdentifiers",
+						"evm.gasEstimates",
+						"evm.assembly"
+					]
+				}
+			},
+			"remappings": []
+		}
+	},
+	"output": {
+		"contracts": {
+			".deps/npm/@solvprotocol/erc-3525/IERC3525Receiver.sol": {
+				"IERC3525Receiver": {
+					"abi": [
+						{
+							"inputs": [
+								{
+									"internalType": "address",
+									"name": "_operator",
+									"type": "address"
+								},
+								{
+									"internalType": "uint256",
+									"name": "_fromTokenId",
+									"type": "uint256"
+								},
+								{
+									"internalType": "uint256",
+									"name": "_toTokenId",
+									"type": "uint256"
+								},
+								{
+									"internalType": "uint256",
+									"name": "_value",
+									"type": "uint256"
+								},
+								{
+									"internalType": "bytes",
+									"name": "_data",
+									"type": "bytes"
+								}
+							],
+							"name": "onERC3525Received",
+							"outputs": [
+								{
+									"internalType": "bytes4",
+									"name": "",
+									"type": "bytes4"
+								}
+							],
+							"stateMutability": "nonpayable",
+							"type": "function"
+						}
+					],
+					"devdoc": {
+						"details": "Interface for a smart contract that wants to be informed by EIP-3525 contracts when   receiving values from ANY addresses or EIP-3525 tokens. Note: the EIP-165 identifier for this interface is 0x009ce20b.",
+						"kind": "dev",
+						"methods": {
+							"onERC3525Received(address,uint256,uint256,uint256,bytes)": {
+								"details": "An EIP-3525 smart contract MUST check whether this function is implemented by the   recipient contract, if the recipient contract implements this function, the EIP-3525   contract MUST call this function after a value transfer (i.e. `transferFrom(uint256,  uint256,uint256,bytes)`).  MUST return 0x009ce20b (i.e. `bytes4(keccak256('onERC3525Received(address,uint256,uint256,  uint256,bytes)'))`) if the transfer is accepted.  MUST revert or return any value other than 0x009ce20b if the transfer is rejected.",
+								"params": {
+									"_data": "Additional data with no specified format",
+									"_fromTokenId": "The token id to transfer value from",
+									"_operator": "The address which triggered the transfer",
+									"_toTokenId": "The token id to transfer value to",
+									"_value": "The transferred value"
+								},
+								"returns": {
+									"_0": "`bytes4(keccak256('onERC3525Received(address,uint256,uint256,uint256,bytes)'))`   unless the transfer is rejected."
+								}
+							}
+						},
+						"title": "EIP-3525 token receiver interface",
+						"version": 1
+					},
+					"evm": {
+						"assembly": "",
+						"bytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"deployedBytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"immutableReferences": {},
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"gasEstimates": null,
+						"legacyAssembly": null,
+						"methodIdentifiers": {
+							"onERC3525Received(address,uint256,uint256,uint256,bytes)": "009ce20b"
+						}
+					},
+					"metadata": "{\"compiler\":{\"version\":\"0.8.22+commit.4fc1097e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_operator\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_fromTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_toTokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_value\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"onERC3525Received\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Interface for a smart contract that wants to be informed by EIP-3525 contracts when   receiving values from ANY addresses or EIP-3525 tokens. Note: the EIP-165 identifier for this interface is 0x009ce20b.\",\"kind\":\"dev\",\"methods\":{\"onERC3525Received(address,uint256,uint256,uint256,bytes)\":{\"details\":\"An EIP-3525 smart contract MUST check whether this function is implemented by the   recipient contract, if the recipient contract implements this function, the EIP-3525   contract MUST call this function after a value transfer (i.e. `transferFrom(uint256,  uint256,uint256,bytes)`).  MUST return 0x009ce20b (i.e. `bytes4(keccak256('onERC3525Received(address,uint256,uint256,  uint256,bytes)'))`) if the transfer is accepted.  MUST revert or return any value other than 0x009ce20b if the transfer is rejected.\",\"params\":{\"_data\":\"Additional data with no specified format\",\"_fromTokenId\":\"The token id to transfer value from\",\"_operator\":\"The address which triggered the transfer\",\"_toTokenId\":\"The token id to transfer value to\",\"_value\":\"The transferred value\"},\"returns\":{\"_0\":\"`bytes4(keccak256('onERC3525Received(address,uint256,uint256,uint256,bytes)'))`   unless the transfer is rejected.\"}}},\"title\":\"EIP-3525 token receiver interface\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"onERC3525Received(address,uint256,uint256,uint256,bytes)\":{\"notice\":\"Handle the receipt of an EIP-3525 token value.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\".deps/npm/@solvprotocol/erc-3525/IERC3525Receiver.sol\":\"IERC3525Receiver\"},\"evmVersion\":\"shanghai\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\".deps/npm/@solvprotocol/erc-3525/IERC3525Receiver.sol\":{\"keccak256\":\"0x786383869053c8390f7d8425750c9d1d2f96ab524374f56b986414271e8b1c9d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8b2fb8260880b4bfd92733e5ae68393f9ca283683e6ae1cb67d5df750ec8e626\",\"dweb:/ipfs/QmeSokK66DCLeonJbz9qKGRrfS9pAje8VqDJRkoCfGN28M\"]}},\"version\":1}",
+					"storageLayout": {
+						"storage": [],
+						"types": null
+					},
+					"userdoc": {
+						"kind": "user",
+						"methods": {
+							"onERC3525Received(address,uint256,uint256,uint256,bytes)": {
+								"notice": "Handle the receipt of an EIP-3525 token value."
+							}
+						},
+						"version": 1
+					}
+				}
+			}
+		},
+		"sources": {
+			".deps/npm/@solvprotocol/erc-3525/IERC3525Receiver.sol": {
+				"ast": {
+					"absolutePath": ".deps/npm/@solvprotocol/erc-3525/IERC3525Receiver.sol",
+					"exportedSymbols": {
+						"IERC3525Receiver": [
+							19
+						]
+					},
+					"id": 20,
+					"license": "MIT",
+					"nodeType": "SourceUnit",
+					"nodes": [
+						{
+							"id": 1,
+							"literals": [
+								"solidity",
+								"^",
+								"0.8",
+								".1"
+							],
+							"nodeType": "PragmaDirective",
+							"src": "33:23:0"
+						},
+						{
+							"abstract": false,
+							"baseContracts": [],
+							"canonicalName": "IERC3525Receiver",
+							"contractDependencies": [],
+							"contractKind": "interface",
+							"documentation": {
+								"id": 2,
+								"nodeType": "StructuredDocumentation",
+								"src": "58:270:0",
+								"text": " @title EIP-3525 token receiver interface\n @dev Interface for a smart contract that wants to be informed by EIP-3525 contracts when \n  receiving values from ANY addresses or EIP-3525 tokens.\n Note: the EIP-165 identifier for this interface is 0x009ce20b."
+							},
+							"fullyImplemented": false,
+							"id": 19,
+							"linearizedBaseContracts": [
+								19
+							],
+							"name": "IERC3525Receiver",
+							"nameLocation": "339:16:0",
+							"nodeType": "ContractDefinition",
+							"nodes": [
+								{
+									"documentation": {
+										"id": 3,
+										"nodeType": "StructuredDocumentation",
+										"src": "362:1064:0",
+										"text": " @notice Handle the receipt of an EIP-3525 token value.\n @dev An EIP-3525 smart contract MUST check whether this function is implemented by the \n  recipient contract, if the recipient contract implements this function, the EIP-3525 \n  contract MUST call this function after a value transfer (i.e. `transferFrom(uint256,\n  uint256,uint256,bytes)`).\n  MUST return 0x009ce20b (i.e. `bytes4(keccak256('onERC3525Received(address,uint256,uint256,\n  uint256,bytes)'))`) if the transfer is accepted.\n  MUST revert or return any value other than 0x009ce20b if the transfer is rejected.\n @param _operator The address which triggered the transfer\n @param _fromTokenId The token id to transfer value from\n @param _toTokenId The token id to transfer value to\n @param _value The transferred value\n @param _data Additional data with no specified format\n @return `bytes4(keccak256('onERC3525Received(address,uint256,uint256,uint256,bytes)'))` \n  unless the transfer is rejected."
+									},
+									"functionSelector": "009ce20b",
+									"id": 18,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "onERC3525Received",
+									"nameLocation": "1440:17:0",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 14,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 5,
+												"mutability": "mutable",
+												"name": "_operator",
+												"nameLocation": "1466:9:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 18,
+												"src": "1458:17:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 4,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "1458:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 7,
+												"mutability": "mutable",
+												"name": "_fromTokenId",
+												"nameLocation": "1485:12:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 18,
+												"src": "1477:20:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 6,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "1477:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 9,
+												"mutability": "mutable",
+												"name": "_toTokenId",
+												"nameLocation": "1507:10:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 18,
+												"src": "1499:18:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 8,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "1499:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 11,
+												"mutability": "mutable",
+												"name": "_value",
+												"nameLocation": "1527:6:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 18,
+												"src": "1519:14:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												},
+												"typeName": {
+													"id": 10,
+													"name": "uint256",
+													"nodeType": "ElementaryTypeName",
+													"src": "1519:7:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_uint256",
+														"typeString": "uint256"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 13,
+												"mutability": "mutable",
+												"name": "_data",
+												"nameLocation": "1550:5:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 18,
+												"src": "1535:20:0",
+												"stateVariable": false,
+												"storageLocation": "calldata",
+												"typeDescriptions": {
+													"typeIdentifier": "t_bytes_calldata_ptr",
+													"typeString": "bytes"
+												},
+												"typeName": {
+													"id": 12,
+													"name": "bytes",
+													"nodeType": "ElementaryTypeName",
+													"src": "1535:5:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_bytes_storage_ptr",
+														"typeString": "bytes"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "1457:99:0"
+									},
+									"returnParameters": {
+										"id": 17,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 16,
+												"mutability": "mutable",
+												"name": "",
+												"nameLocation": "-1:-1:-1",
+												"nodeType": "VariableDeclaration",
+												"scope": 18,
+												"src": "1575:6:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_bytes4",
+													"typeString": "bytes4"
+												},
+												"typeName": {
+													"id": 15,
+													"name": "bytes4",
+													"nodeType": "ElementaryTypeName",
+													"src": "1575:6:0",
+													"typeDescriptions": {
+														"typeIdentifier": "t_bytes4",
+														"typeString": "bytes4"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "1574:8:0"
+									},
+									"scope": 19,
+									"src": "1431:152:0",
+									"stateMutability": "nonpayable",
+									"virtual": false,
+									"visibility": "external"
+								}
+							],
+							"scope": 20,
+							"src": "329:1257:0",
+							"usedErrors": [],
+							"usedEvents": []
+						}
+					],
+					"src": "33:1553:0"
+				},
+				"id": 0
+			}
+		}
+	}
+}
