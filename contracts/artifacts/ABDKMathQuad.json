@@ -1,0 +1,91 @@
+{
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"goerli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"data": {
+		"bytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"linkReferences": {},
+			"object": "60556032600b8282823980515f1a607314602657634e487b7160e01b5f525f60045260245ffd5b305f52607381538281f3fe730000000000000000000000000000000000000000301460806040525f80fdfea2646970667358221220f7d17966be863416bab0f395038a05701e6bf305d4a271243bd4e4a41824d2c264736f6c63430008160033",
+			"opcodes": "PUSH1 0x55 PUSH1 0x32 PUSH1 0xB DUP3 DUP3 DUP3 CODECOPY DUP1 MLOAD PUSH0 BYTE PUSH1 0x73 EQ PUSH1 0x26 JUMPI PUSH4 0x4E487B71 PUSH1 0xE0 SHL PUSH0 MSTORE PUSH0 PUSH1 0x4 MSTORE PUSH1 0x24 PUSH0 REVERT JUMPDEST ADDRESS PUSH0 MSTORE PUSH1 0x73 DUP2 MSTORE8 DUP3 DUP2 RETURN INVALID PUSH20 0x0 ADDRESS EQ PUSH1 0x80 PUSH1 0x40 MSTORE PUSH0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 0xF7 0xD1 PUSH26 0x66BE863416BAB0F395038A05701E6BF305D4A271243BD4E4A418 0x24 0xD2 0xC2 PUSH5 0x736F6C6343 STOP ADDMOD AND STOP CALLER ",
+			"sourceMap": "499:53462:0:-:0;;;;;;;;;;;;;;;-1:-1:-1;;;499:53462:0;;;;;;;;;;;;;;;;;"
+		},
+		"deployedBytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"immutableReferences": {},
+			"linkReferences": {},
+			"object": "730000000000000000000000000000000000000000301460806040525f80fdfea2646970667358221220f7d17966be863416bab0f395038a05701e6bf305d4a271243bd4e4a41824d2c264736f6c63430008160033",
+			"opcodes": "PUSH20 0x0 ADDRESS EQ PUSH1 0x80 PUSH1 0x40 MSTORE PUSH0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 0xF7 0xD1 PUSH26 0x66BE863416BAB0F395038A05701E6BF305D4A271243BD4E4A418 0x24 0xD2 0xC2 PUSH5 0x736F6C6343 STOP ADDMOD AND STOP CALLER ",
+			"sourceMap": "499:53462:0:-:0;;;;;;;;"
+		},
+		"gasEstimates": {
+			"creation": {
+				"codeDepositCost": "17000",
+				"executionCost": "96",
+				"totalCost": "17096"
+			},
+			"internal": {
+				"abs(bytes16)": "infinite",
+				"add(bytes16,bytes16)": "infinite",
+				"cmp(bytes16,bytes16)": "infinite",
+				"div(bytes16,bytes16)": "infinite",
+				"eq(bytes16,bytes16)": "infinite",
+				"exp(bytes16)": "infinite",
+				"from128x128(int256)": "infinite",
+				"from64x64(int128)": "infinite",
+				"fromDouble(bytes8)": "infinite",
+				"fromInt(int256)": "infinite",
+				"fromOctuple(bytes32)": "infinite",
+				"fromUInt(uint256)": "infinite",
+				"isInfinity(bytes16)": "infinite",
+				"isNaN(bytes16)": "infinite",
+				"ln(bytes16)": "infinite",
+				"log_2(bytes16)": "infinite",
+				"mostSignificantBit(uint256)": "infinite",
+				"mul(bytes16,bytes16)": "infinite",
+				"neg(bytes16)": "infinite",
+				"pow_2(bytes16)": "infinite",
+				"sign(bytes16)": "infinite",
+				"sqrt(bytes16)": "infinite",
+				"sub(bytes16,bytes16)": "infinite",
+				"to128x128(bytes16)": "infinite",
+				"to64x64(bytes16)": "infinite",
+				"toDouble(bytes16)": "infinite",
+				"toInt(bytes16)": "infinite",
+				"toOctuple(bytes16)": "infinite",
+				"toUInt(bytes16)": "infinite"
+			}
+		},
+		"methodIdentifiers": {}
+	},
+	"abi": []
+}

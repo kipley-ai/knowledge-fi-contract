@@ -1,0 +1,78 @@
+{
+	"compiler": {
+		"version": "0.8.22+commit.4fc1097e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_sft_address",
+						"type": "address"
+					}
+				],
+				"name": "_profitAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "_shareSlot",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/IKipProtocol.sol": "IKipProtocol"
+		},
+		"evmVersion": "shanghai",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/IKipProtocol.sol": {
+			"keccak256": "0x05750cfa6c35d098f039b5c5d45fdf683acb96a7d3e0656d115a31c03a867291",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b955f8ce39e897b6fb4884f76e9b5ac4d0c613959c6d22fcdcbfbceff672036c",
+				"dweb:/ipfs/QmPJR9AcXBzHj8Kac5KHPC9VSwDqekBrPfNzAoesDv34M6"
+			]
+		}
+	},
+	"version": 1
+}

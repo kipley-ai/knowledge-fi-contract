@@ -14,7 +14,7 @@
 					},
 					{
 						"internalType": "address",
-						"name": "price_token",
+						"name": "pay_token",
 						"type": "address"
 					},
 					{
@@ -71,43 +71,6 @@
 				"inputs": [
 					{
 						"indexed": false,
-						"internalType": "uint256",
-						"name": "consume_id",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "_amount",
-						"type": "uint256"
-					},
-					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "reference_id",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "profit_per_share",
-								"type": "uint256"
-							}
-						],
-						"indexed": false,
-						"internalType": "struct KipProtocol.receipt[]",
-						"name": "_receipt",
-						"type": "tuple[]"
-					}
-				],
-				"name": "ConsumeLog",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
 						"internalType": "address",
 						"name": "_walletAddress",
 						"type": "address"
@@ -120,6 +83,51 @@
 					}
 				],
 				"name": "ConsumerBalanceRecharged",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "_consumer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "_amount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "asset_id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "invoice_id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "order_id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "order_timestamp",
+								"type": "uint256"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct KipProtocol.invoice[]",
+						"name": "_invoice",
+						"type": "tuple[]"
+					}
+				],
+				"name": "InvoiceCreated",
 				"type": "event"
 			},
 			{
@@ -151,7 +159,7 @@
 						"type": "address"
 					}
 				],
-				"name": "PriceTokenChanged",
+				"name": "PayTokenChanged",
 				"type": "event"
 			},
 			{
@@ -197,16 +205,28 @@
 					{
 						"indexed": false,
 						"internalType": "uint256",
-						"name": "reference_id",
+						"name": "asset_id",
 						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "owner_address",
+						"type": "address"
 					}
 				],
 				"name": "TokenCreated",
 				"type": "event"
 			},
 			{
-				"inputs": [],
-				"name": "_lastConsumeID",
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_sft_address",
+						"type": "address"
+					}
+				],
+				"name": "_profitAmount",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -219,7 +239,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "commissionRate",
+				"name": "claimInterval",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -234,35 +254,41 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_consumer",
+						"name": "_sft_address",
 						"type": "address"
 					},
 					{
 						"internalType": "uint256",
-						"name": "_amount",
+						"name": "token_id",
 						"type": "uint256"
 					},
 					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "reference_id",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "profit_per_share",
-								"type": "uint256"
-							}
-						],
-						"internalType": "struct KipProtocol.receipt[]",
-						"name": "_receipt",
-						"type": "tuple[]"
+						"internalType": "uint256",
+						"name": "snapshot_id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "profit",
+						"type": "uint256"
 					}
 				],
-				"name": "consume",
+				"name": "claimProfit",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "commissionRate",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -287,9 +313,59 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
-						"name": "sft_address",
-						"type": "address"
+						"components": [
+							{
+								"internalType": "address",
+								"name": "_consumer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "_amount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "asset_id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "invoice_id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "order_id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "order_timestamp",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct KipProtocol.invoice[]",
+						"name": "_invoice",
+						"type": "tuple[]"
+					}
+				],
+				"name": "createInvoice",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name_",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "symbol_",
+						"type": "string"
 					},
 					{
 						"internalType": "uint256",
@@ -300,24 +376,21 @@
 						"internalType": "uint256",
 						"name": "token_amount",
 						"type": "uint256"
-					}
-				],
-				"name": "createToken",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "lastConsumeID",
-				"outputs": [
+					},
 					{
 						"internalType": "uint256",
-						"name": "",
+						"name": "asset_id",
 						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "token_owner",
+						"type": "address"
 					}
 				],
-				"stateMutability": "view",
+				"name": "createSFT",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -335,12 +408,54 @@
 			},
 			{
 				"inputs": [],
-				"name": "priceToken",
+				"name": "payTokenAddress",
 				"outputs": [
 					{
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "profitSnapshotId",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_sft_address",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "snapshot_id",
+						"type": "uint256"
+					}
+				],
+				"name": "profitSnapshotOfAt",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -545,6 +660,14 @@
 				"dweb:/ipfs/Qmau6x4Ns9XdyynRCNNp3RhLqijJjFm7z5fyZazfYFGYdq"
 			]
 		},
+		"@openzeppelin/contracts/utils/Arrays.sol": {
+			"keccak256": "0x8806d620b6571932b662cfd48fbd518d4f70df1f88a23b5724cacde64a77bda1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8043304c8f9e1c1dc4a41935efa067daa77ad7abbae1fda41f015d53fbf327a5",
+				"dweb:/ipfs/QmTrF2hSkRZoN9EEu8zdEhBpGNZ7RxzCdXf9ydzc2HQ3tM"
+			]
+		},
 		"@openzeppelin/contracts/utils/Context.sol": {
 			"keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
 			"license": "MIT",
@@ -559,6 +682,14 @@
 			"urls": [
 				"bzz-raw://7448ab095d6940130bcf76ba47a2eab14148c83119523b93dd89f6d84edd6c02",
 				"dweb:/ipfs/QmawrZ4voKQjH3oomXT3Kuheb3Mnmo2VvVpxg8Ne5UJUrd"
+			]
+		},
+		"@openzeppelin/contracts/utils/StorageSlot.sol": {
+			"keccak256": "0x32ba59b4b7299237c8ba56319110989d7978a039faf754793064e967e5894418",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1ae50c8b562427df610cc4540c9bf104acca7ef8e2dcae567ae7e52272281e9c",
+				"dweb:/ipfs/QmTHiadFCSJUPpRjNegc5SahmeU8bAoY8i9Aq6tVscbcKR"
 			]
 		},
 		"@openzeppelin/contracts/utils/Strings.sol": {
@@ -609,6 +740,30 @@
 				"dweb:/ipfs/QmNqYc8To2NdnpP6E1tGz7t6A7beuENde5yovwov5pW1fA"
 			]
 		},
+		"@solvprotocol/erc-3525/ERC3525.sol": {
+			"keccak256": "0xdb06f2cb8c31b341fe867e41978007c2afb51ef58dab1d790a502ee3b527bdeb",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7dff0a3cea5381e74a94250289fa3a0c1785d791315107e9ec2008bfbffba122",
+				"dweb:/ipfs/QmRH7xSBT5SxzdBCv6u35vN99L1uSch4WP6ju6SNubKjxq"
+			]
+		},
+		"@solvprotocol/erc-3525/ERC3525SlotApprovable.sol": {
+			"keccak256": "0x8618cf9ccf9fad16d5798ef6e6403cc2f67b8ef947c8cb03aa40d295502c7744",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://777523f1e07f46beedd110fc8f2e88eaa22e48bd51a1577bf092c77da0c87d84",
+				"dweb:/ipfs/QmSTyrxGPL226PxnqXGUhqKT7SRprWDF17pVP8w8yPa98t"
+			]
+		},
+		"@solvprotocol/erc-3525/ERC3525SlotEnumerable.sol": {
+			"keccak256": "0x7552d289d5a59b6e9250bcd0a0036d5fe1c949bb6259874677cb91dbdf9f3102",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://61cdef208c82d4d39b3b81b557fb7c3b8e484610f376c8ff7cffa5ea86a672e8",
+				"dweb:/ipfs/QmSw9SRe1RDtLUaKiAct9ADQf27e5Gvk6D88ufc64RjpnH"
+			]
+		},
 		"@solvprotocol/erc-3525/IERC3525.sol": {
 			"keccak256": "0x901207b3c61837eeae24c25271533a0dd684745dad978235053fe4d9d86a9ded",
 			"license": "MIT",
@@ -617,12 +772,36 @@
 				"dweb:/ipfs/QmeFMHVXcMzZ7PBY13m9wPfeuYqah7wyscKfyR4C7MogDZ"
 			]
 		},
+		"@solvprotocol/erc-3525/IERC3525Receiver.sol": {
+			"keccak256": "0x786383869053c8390f7d8425750c9d1d2f96ab524374f56b986414271e8b1c9d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8b2fb8260880b4bfd92733e5ae68393f9ca283683e6ae1cb67d5df750ec8e626",
+				"dweb:/ipfs/QmeSokK66DCLeonJbz9qKGRrfS9pAje8VqDJRkoCfGN28M"
+			]
+		},
 		"@solvprotocol/erc-3525/IERC721.sol": {
 			"keccak256": "0x3553276ca123c09e0ebc3232afb0452dff1d2841e767e221deffe0633867f5e8",
 			"license": "MIT",
 			"urls": [
 				"bzz-raw://7bed27e2b7297a37d632fe2088796626181824c9148b2893a30b447d87dd7312",
 				"dweb:/ipfs/QmUbLTwJDzopZam1TVqkcWEd4nXmVkwrH2Yb6VTFT4DcTe"
+			]
+		},
+		"@solvprotocol/erc-3525/IERC721Receiver.sol": {
+			"keccak256": "0x1b5f60bb2c8e2915ba219bd9916af6328ae8da2ca2daa7e5a6fc674277fb8ab1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://3e57afce81697d811c0c81ecaba51c164b6da1fffad3d433cc9e98c5ac8e9b25",
+				"dweb:/ipfs/QmXbTFQ9WVnaxuER54djUyia4pHgw637FJKBh1xKQgRwgi"
+			]
+		},
+		"@solvprotocol/erc-3525/extensions/IERC3525Metadata.sol": {
+			"keccak256": "0x73d0c053478063ca4345ccc32e0e069ed14636e8f7dcffd27a3a5d16e5df1015",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e926678863bc58d9267d79687e8d090ecebd348cd313237654f75fead1a6db65",
+				"dweb:/ipfs/QmWnxuw7iq8ikw4uBsKXszpnXcFTSr11DhTRg7MpFrdBB2"
 			]
 		},
 		"@solvprotocol/erc-3525/extensions/IERC3525SlotApprovable.sol": {
@@ -649,20 +828,44 @@
 				"dweb:/ipfs/QmXfhoS6qzqWpWRGoTc2tdCf88MnGX5eCt4nfV2qun7BEY"
 			]
 		},
-		"contracts/ISFT.sol": {
-			"keccak256": "0x17358c34abab76cd1dabdc05f33136fba861cffe49422a8e0cbf4a650e5dc2c8",
+		"@solvprotocol/erc-3525/extensions/IERC721Metadata.sol": {
+			"keccak256": "0xb3e7cb4572ee9649f15fd17dc3865c8a4a47f92679233cc68e578c36f45ac5e1",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://48fbf3159f9b63367ada5c72dc0c46c12aca94ca8eb6a9f77a137fe6c38aefff",
-				"dweb:/ipfs/Qmbv5n88yc5inP9zRLXjLNfKVXYGsqF8swkQ8TDLwpiziD"
+				"bzz-raw://b3141ce4e2518b3060e258e6db17d45521fc135776674498bc75b269fc997b82",
+				"dweb:/ipfs/QmTDjiZMXXFtLjn5RLy1abU4ugMDkEC7uzdejDjgGBMHV6"
+			]
+		},
+		"@solvprotocol/erc-3525/periphery/interface/IERC3525MetadataDescriptor.sol": {
+			"keccak256": "0xc297d848cece83ff6d6d67e6f884667425445776b3b5c8fd185c4a01a2f79de7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a498945e761792cbf32be30eb8f512b214260a55b56e325c2611e8caa23978bf",
+				"dweb:/ipfs/QmZBr8aqYyyErUqHdGDhyZXyj4RUk2G1fsLfRtwdEC1Wf3"
+			]
+		},
+		"contracts/ISFT.sol": {
+			"keccak256": "0x43dc7434c82d4422ba50f8881afa13d23742bd1aed7e676435e6c362855e11fc",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9617dea9ca3fe95ccabf175bd7f6199a462777d6309fb0be6eafab13cf6a2898",
+				"dweb:/ipfs/QmQAimp9TNhj2aksgXcUnMFJa1dzEnwA4j2fpawFKQ5MNu"
 			]
 		},
 		"contracts/KipProtocol.sol": {
-			"keccak256": "0xa5f847bb2c71baa91a1413d12cd7006e53af0b151fc1194822410e949b8925b6",
+			"keccak256": "0x4b8c2c52aab00ea2b50aa15235a2d1b54fd8d6cd14c5d5ad810db14a706d7499",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://6e26515af5d14cc0d07696434b7b3f1413696ff77c2b47fa007dc86bc2c5adc9",
-				"dweb:/ipfs/QmWPVoxYSVT4KCupwKXwLwb1ug5HK4oLBXdrvK39QiY4kv"
+				"bzz-raw://d1f0a44a0c0b270d0cb27df3e3cf96ff80b5fb28518fc3e1c438ebebcad0772f",
+				"dweb:/ipfs/QmQWctUaXoxs9xW4395k2bQCpv16eWKWWWvKYwfVEd66jJ"
+			]
+		},
+		"contracts/SFT.sol": {
+			"keccak256": "0x7dd9d01236200eeb1f10557dd109a7618fdca4e09c86de11fdfe430ede4200d6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://3d17d31d4ae17dc018f61618831baffdbd5ef37dd67e6be31bd865e214e798cf",
+				"dweb:/ipfs/QmWhwBsFhEXnrP6esgeeUsE9rY83ddAM4GZgUG71ML6UHA"
 			]
 		}
 	},

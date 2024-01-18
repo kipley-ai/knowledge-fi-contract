@@ -9,21 +9,6 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "kip_address",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "reference_id",
-						"type": "string"
-					},
-					{
-						"internalType": "uint8",
-						"name": "price_",
-						"type": "uint8"
-					},
-					{
-						"internalType": "address",
 						"name": "owner_",
 						"type": "address"
 					},
@@ -36,11 +21,6 @@
 						"internalType": "string",
 						"name": "symbol_",
 						"type": "string"
-					},
-					{
-						"internalType": "uint8",
-						"name": "decimals_",
-						"type": "uint8"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -139,6 +119,37 @@
 				"inputs": [
 					{
 						"indexed": true,
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "_slot",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "_operator",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bool",
+						"name": "_approved",
+						"type": "bool"
+					}
+				],
+				"name": "ApprovalForSlot",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
 						"internalType": "uint256",
 						"name": "_tokenId",
 						"type": "uint256"
@@ -176,19 +187,6 @@
 					}
 				],
 				"name": "OwnershipTransferred",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "newprice_",
-						"type": "uint256"
-					}
-				],
-				"name": "QueryPriceChanged",
 				"type": "event"
 			},
 			{
@@ -278,45 +276,6 @@
 				],
 				"name": "TransferValue",
 				"type": "event"
-			},
-			{
-				"inputs": [],
-				"name": "_offchainReferenceID",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "_ownerAddress",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "_queryPrice",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
 			},
 			{
 				"inputs": [
@@ -491,6 +450,35 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner_",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "slot_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "operator_",
+						"type": "address"
+					}
+				],
+				"name": "isApprovedForSlot",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "metadataDescriptor",
 				"outputs": [
@@ -559,33 +547,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "offchainReferenceID",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
 				"name": "owner",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "ownerAddress",
 				"outputs": [
 					{
 						"internalType": "address",
@@ -610,19 +572,6 @@
 						"internalType": "address",
 						"name": "owner_",
 						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "queryPrice",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -707,6 +656,34 @@
 			{
 				"inputs": [
 					{
+						"internalType": "address",
+						"name": "owner_",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "slot_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "operator_",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "approved_",
+						"type": "bool"
+					}
+				],
+				"name": "setApprovalForSlot",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "string",
 						"name": "newuri",
 						"type": "string"
@@ -721,13 +698,32 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "_newprice",
+						"name": "index_",
 						"type": "uint256"
 					}
 				],
-				"name": "setQueryPrice",
-				"outputs": [],
-				"stateMutability": "nonpayable",
+				"name": "slotByIndex",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "slotCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -822,6 +818,30 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "slot_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "index_",
+						"type": "uint256"
+					}
+				],
+				"name": "tokenInSlotByIndex",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address",
 						"name": "owner_",
 						"type": "address"
@@ -833,6 +853,25 @@
 					}
 				],
 				"name": "tokenOfOwnerByIndex",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "slot_",
+						"type": "uint256"
+					}
+				],
+				"name": "tokenSupplyInSlot",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -1002,6 +1041,15 @@
 				"ApprovalForAll(address,address,bool)": {
 					"details": "This emits when an operator is enabled or disabled for an owner.  The operator can manage all NFTs of the owner."
 				},
+				"ApprovalForSlot(address,uint256,address,bool)": {
+					"details": "MUST emits when an operator is approved or disapproved to manage all of `_owner`'s  tokens with the same slot.",
+					"params": {
+						"_approved": "Identify if `_operator` is approved or disapproved",
+						"_operator": "The operator being approved or disapproved",
+						"_owner": "The address whose tokens are approved",
+						"_slot": "The slot to approve, all of `_owner`'s tokens with this slot are approved"
+					}
+				},
 				"ApprovalValue(uint256,address,uint256)": {
 					"details": "MUST emits when the approval value of a token is set or changed.",
 					"params": {
@@ -1047,8 +1095,10 @@
 				"renounceOwnership()": {
 					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
 				},
-				"supportsInterface(bytes4)": {
-					"details": "Returns true if this contract implements the interface defined by `interfaceId`. See the corresponding https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[EIP section] to learn more about how these ids are created. This function call must use less than 30 000 gas."
+				"slotCount()": {
+					"returns": {
+						"_0": "The total amount of slots"
+					}
 				},
 				"symbol()": {
 					"details": "Returns the token collection symbol."
@@ -1076,6 +1126,9 @@
 				"contractURI()": {
 					"notice": "Returns the Uniform Resource Identifier (URI) for the current ERC3525 contract."
 				},
+				"slotCount()": {
+					"notice": "Get the total amount of slots stored by the contract."
+				},
 				"totalSupply()": {
 					"notice": "Count NFTs tracked by this contract"
 				}
@@ -1093,7 +1146,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -1155,6 +1208,22 @@
 				"dweb:/ipfs/QmRH7xSBT5SxzdBCv6u35vN99L1uSch4WP6ju6SNubKjxq"
 			]
 		},
+		"@solvprotocol/erc-3525/ERC3525SlotApprovable.sol": {
+			"keccak256": "0x8618cf9ccf9fad16d5798ef6e6403cc2f67b8ef947c8cb03aa40d295502c7744",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://777523f1e07f46beedd110fc8f2e88eaa22e48bd51a1577bf092c77da0c87d84",
+				"dweb:/ipfs/QmSTyrxGPL226PxnqXGUhqKT7SRprWDF17pVP8w8yPa98t"
+			]
+		},
+		"@solvprotocol/erc-3525/ERC3525SlotEnumerable.sol": {
+			"keccak256": "0x7552d289d5a59b6e9250bcd0a0036d5fe1c949bb6259874677cb91dbdf9f3102",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://61cdef208c82d4d39b3b81b557fb7c3b8e484610f376c8ff7cffa5ea86a672e8",
+				"dweb:/ipfs/QmSw9SRe1RDtLUaKiAct9ADQf27e5Gvk6D88ufc64RjpnH"
+			]
+		},
 		"@solvprotocol/erc-3525/IERC3525.sol": {
 			"keccak256": "0x901207b3c61837eeae24c25271533a0dd684745dad978235053fe4d9d86a9ded",
 			"license": "MIT",
@@ -1195,6 +1264,22 @@
 				"dweb:/ipfs/QmWnxuw7iq8ikw4uBsKXszpnXcFTSr11DhTRg7MpFrdBB2"
 			]
 		},
+		"@solvprotocol/erc-3525/extensions/IERC3525SlotApprovable.sol": {
+			"keccak256": "0xbe5baf681bb5a93e20573b01d22559f3822d7e97cc8f028d03f378e570fac47f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://746f96cd24d2686b78a481835fbb24707dca2987a2f3d4cd2e8d044f5a73dcc0",
+				"dweb:/ipfs/QmPHozfJQ7cLf2JQbLMF7M4mC6sB4JRRMB4nmxEWfbgPsg"
+			]
+		},
+		"@solvprotocol/erc-3525/extensions/IERC3525SlotEnumerable.sol": {
+			"keccak256": "0x27afa03aa1c72fd7910701353d1cae009af79ddc83b44b91bfb59001c12fbe9e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b78135515798c96684c849c4c69bf53adec444495279570506492481f532d591",
+				"dweb:/ipfs/QmZVvBidwMjWwCF1iUxCmH3zMbeh5SNyCMztv77mZwGoWt"
+			]
+		},
 		"@solvprotocol/erc-3525/extensions/IERC721Enumerable.sol": {
 			"keccak256": "0x872552c912722ad746f43b91583b921b97943aeaddba573ee6f14ef1eec9e03d",
 			"license": "MIT",
@@ -1220,11 +1305,11 @@
 			]
 		},
 		"contracts/SFT.sol": {
-			"keccak256": "0xeac5a75dd51c00d7366c0d8514b6fc19484bca230d7ecc3a0e875b21007221ce",
+			"keccak256": "0xa39c2135ffc59ec9dc4cdf748cbb1d8964ea32709179267926d3fd3a2e38a062",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://034381c8885b2dca07471890fc7be1a7328e8cb824f4466e649d5fb3f2a1e952",
-				"dweb:/ipfs/Qmdk7y188KRx2ojchLgrMTnJLqNUPVqkSxJbmwnSdsEK4L"
+				"bzz-raw://6b9d638ccb3d646c1e0cc007d525ca72563ff20f5223e569e2d4e3663b4bd063",
+				"dweb:/ipfs/QmaNrDFtUdCGMLPYb5GGteExN441QqYbiMiAYdrqoQetEa"
 			]
 		}
 	},

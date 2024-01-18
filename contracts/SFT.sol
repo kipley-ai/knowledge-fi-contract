@@ -5,28 +5,18 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@solvprotocol/erc-3525/ERC3525SlotApprovable.sol";
+import "./IKipProtocol.sol";
 
 contract SFT is Context, ERC3525SlotApprovable, Ownable {
-    uint256 public offchainReferenceID;
-    string public baseURI;
-    address public ownerAddress;
-    uint256 public queryPrice;
 
-    event QueryPriceChanged(uint256 newprice_);
+    string public baseURI;
 
     constructor(
-        address kip_address,
-        uint256 reference_id,
         address owner_,
-        uint8 price_,
         string memory name_,
-        string memory symbol_,
-        uint8 decimals_
-    ) ERC3525SlotApprovable(name_, symbol_, decimals_)
-      Ownable(kip_address) {
-        ownerAddress = owner_;
-        queryPrice = price_;
-        offchainReferenceID = reference_id;
+        string memory symbol_
+    ) ERC3525SlotApprovable(name_, symbol_, 18)
+      Ownable(owner_) {
     }
 
     function mint(
@@ -44,12 +34,6 @@ contract SFT is Context, ERC3525SlotApprovable, Ownable {
         ERC3525._mintValue(tokenId_, value_);
     }
 
-    function setQueryPrice(uint256 _newprice) public {
-        require(_msgSender() == ownerAddress, "Not an Owner");
-        queryPrice = _newprice;
-        emit QueryPriceChanged(_newprice);
-    }
-
     function _baseURI() internal override view returns (string memory) {
         return baseURI;
     }
@@ -58,15 +42,44 @@ contract SFT is Context, ERC3525SlotApprovable, Ownable {
         baseURI = newuri;
     }
 
-    function _offchainReferenceID() public view returns (uint256) {
-        return offchainReferenceID;
+    function _profitEstimate() public view returns (uint256) {
+        IKipProtocol Kip = IKipProtocol(owner());
+        return Kip._profitAmount(address(this));
     }
 
-    function _ownerAddress() public view returns (address) {
-        return ownerAddress;
+    function _tokenProfitEstimate(uint256 token_id) public view returns (uint256) {
+        IKipProtocol Kip = IKipProtocol(owner());
+        uint256 shareSlot = Kip._shareSlot();
+        if(slotOf(token_id) != shareSlot) {
+            revert("No match share slot"); 
+        }
+        return (Kip._profitAmount(address(this))*(balanceOf(token_id)/_slotAmount(token_id)));
     }
 
-    function _queryPrice() public view returns (uint256) {
-        return queryPrice;
+    function _slotAmount(uint256 sft_slot) public view returns (uint256) {
+        uint256 slot_amount = 0;
+        for (uint256 j = 0; j < tokenSupplyInSlot(sft_slot); j++) {
+            uint256 _sft_token_id = tokenInSlotByIndex(sft_slot,j);
+            uint256 _slot_value = balanceOf(_sft_token_id);
+            slot_amount += _slot_value;
+        }
+        return slot_amount;
+    }
+
+// override
+    function transferFrom(
+        uint256 fromTokenId_,
+        address to_,
+        uint256 value_
+    ) public payable virtual override(ERC3525, IERC3525) returns (uint256 newTokenId) {
+        return super.transferFrom(fromTokenId_, to_, value_);
+    }
+
+    function transferFrom(
+        uint256 fromTokenId_,
+        uint256 toTokenId_,
+        uint256 value_
+    ) public payable virtual override(ERC3525, IERC3525) {
+        super.transferFrom(fromTokenId_, toTokenId_, value_);
     }
 }

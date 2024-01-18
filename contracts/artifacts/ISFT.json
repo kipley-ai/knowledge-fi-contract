@@ -49,9 +49,6 @@
 		},
 		"gasEstimates": null,
 		"methodIdentifiers": {
-			"_offchainReferenceID()": "dd3fc0ab",
-			"_ownerAddress()": "a786c18b",
-			"_queryPrice()": "9e6ec2cb",
 			"allowance(uint256,address)": "e345e0bc",
 			"approve(address,uint256)": "095ea7b3",
 			"approve(uint256,address,uint256)": "8cb0a511",
@@ -59,11 +56,14 @@
 			"balanceOf(uint256)": "9cc7f708",
 			"getApproved(uint256)": "081812fc",
 			"isApprovedForAll(address,address)": "e985e9c5",
+			"isApprovedForSlot(address,uint256,address)": "e345f05e",
+			"mint(address,uint256,uint256)": "156e29f6",
 			"owner()": "8da5cb5b",
 			"ownerOf(uint256)": "6352211e",
 			"safeTransferFrom(address,address,uint256)": "42842e0e",
 			"safeTransferFrom(address,address,uint256,bytes)": "b88d4fde",
 			"setApprovalForAll(address,bool)": "a22cb465",
+			"setApprovalForSlot(address,uint256,address,bool)": "55cd4e06",
 			"slotByIndex(uint256)": "993bef8d",
 			"slotCount()": "ed08fa80",
 			"slotOf(uint256)": "263f3e7e",
@@ -128,6 +128,37 @@
 				}
 			],
 			"name": "ApprovalForAll",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "_owner",
+					"type": "address"
+				},
+				{
+					"indexed": true,
+					"internalType": "uint256",
+					"name": "_slot",
+					"type": "uint256"
+				},
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "_operator",
+					"type": "address"
+				},
+				{
+					"indexed": false,
+					"internalType": "bool",
+					"name": "_approved",
+					"type": "bool"
+				}
+			],
+			"name": "ApprovalForSlot",
 			"type": "event"
 		},
 		{
@@ -229,45 +260,6 @@
 			],
 			"name": "TransferValue",
 			"type": "event"
-		},
-		{
-			"inputs": [],
-			"name": "_offchainReferenceID",
-			"outputs": [
-				{
-					"internalType": "string",
-					"name": "",
-					"type": "string"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "_ownerAddress",
-			"outputs": [
-				{
-					"internalType": "address",
-					"name": "",
-					"type": "address"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "_queryPrice",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
 		},
 		{
 			"inputs": [
@@ -416,6 +408,58 @@
 			"type": "function"
 		},
 		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_owner",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_slot",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address",
+					"name": "_operator",
+					"type": "address"
+				}
+			],
+			"name": "isApprovedForSlot",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "mintTo_",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "slot_",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "value_",
+					"type": "uint256"
+				}
+			],
+			"name": "mint",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
 			"inputs": [],
 			"name": "owner",
 			"outputs": [
@@ -514,6 +558,34 @@
 			"name": "setApprovalForAll",
 			"outputs": [],
 			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_owner",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_slot",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address",
+					"name": "_operator",
+					"type": "address"
+				},
+				{
+					"internalType": "bool",
+					"name": "_approved",
+					"type": "bool"
+				}
+			],
+			"name": "setApprovalForSlot",
+			"outputs": [],
+			"stateMutability": "payable",
 			"type": "function"
 		},
 		{
