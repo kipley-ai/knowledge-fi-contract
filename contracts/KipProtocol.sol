@@ -44,7 +44,8 @@ contract KipProtocol is Ownable, ReentrancyGuard {
         uint256[] timestamp;
     }
     
-    mapping(address => snapshots) private sft_total_profit;
+    // mapping(address => snapshots) private sft_total_profit;
+    mapping(address => mapping(uint256 => snapshots)) private sft_token_profit;
 
     event CommissionRateChanged(uint256 newfee_);
     event ServiceProviderChanged(address _providerAddress, bool _enabled);
@@ -79,53 +80,63 @@ contract KipProtocol is Ownable, ReentrancyGuard {
         for (uint256 i = 0; i < _invoice.length; i++) {
             address _sft_address = sft_assets[_invoice[i].asset_id];
             require(_sft_address != address(0), "ReferenceID does not exist");
-            (bool snapshotted, uint256 value) = profitSnapshotOfAt(_sft_address, _lastSnapshotId(sft_total_profit[_sft_address].ids));
-            uint256 _profit = _invoice[i]._amount;
-            if(snapshotted){
-                _profit += value;
-            }
+
+            _allocateTokenProfit(_sft_address, _invoice[i]._amount);
+
             if (consumer_balance[_invoice[i]._consumer] < _invoice[i]._amount) {
                 revert("Not enough balance"); 
             }else{
                 consumer_balance[_invoice[i]._consumer] -= _invoice[i]._amount;
-                _updateProfitSnapshot(_sft_address,_profit);
             }
         }
         emit InvoiceCreated(_invoice);
+    }
+
+    // allocate profit to each token as snapshot
+    function _allocateTokenProfit(address _sft_address, uint256 profit) private {
+        ISFT _sft = ISFT(_sft_address);
+        for (uint256 i = 1; i <= _sft.totalSupply(); i++) {
+            (bool snapshotted, uint256 value) = profitSnapshotOfAt(_sft_address, i, _lastSnapshotId(sft_token_profit[_sft_address][i].ids));
+            if (snapshotted) {
+                _updateProfitSnapshot(_sft_address, i, value + profit * (_sft.balanceOf(i) / _sft._slotAmount(i)));
+            } else {
+                _updateProfitSnapshot(_sft_address, i, profit * (_sft.balanceOf(i) / _sft._slotAmount(i)));
+            }
+        }
     }  
     
-    function claimProfit(address _sft_address, uint256 token_id, uint256 snapshot_id, uint256 profit) public {
+    function claimProfit(address _sft_address, uint256 token_id, uint256 profit) public {
 
-        if((_lastSnapshotId(sft_total_profit[_sft_address].ids)-snapshot_id) < claimInterval)
-        {
-            revert("snapshot_id can't withdraw"); 
-        }
-        
-        (bool snapshotted, uint256 value) = profitSnapshotOfAt(_sft_address, snapshot_id);
-        if(snapshotted && value>0)
-        {
-            ISFT _sft = ISFT(_sft_address);
-            EnumerableMap.UintToUintMap storage token_withdraw = sft_token_withdraw[_sft_address];
-             (bool withdrawIsExist, uint256 withdrawBeforeValue) = token_withdraw.tryGet(token_id);
-            if (_sft.ownerOf(token_id) != _msgSender() && _sft.slotOf(token_id) != shareSlot) {
-                revert("Not token owner"); 
-            }
+        // (current time - claimInterval) has the latest withdrawable snapshot
+        (bool has_lower, uint256 index) = _findLowerBound(sft_token_profit[_sft_address][token_id].timestamp, block.timestamp - claimInterval);
 
-            if(!withdrawIsExist || (withdrawIsExist && (value*(_sft.balanceOf(token_id)/_sft._slotAmount(token_id))-withdrawBeforeValue) >= profit))
-            {
-                IERC20 token = IERC20(payTokenAddress);
-                token.transferFrom(address(this), _msgSender(), profit);    
-                token_withdraw.set(token_id, withdrawBeforeValue + profit);
+        if (has_lower) {
+            uint256 value = sft_token_profit[_sft_address][token_id].values[index];
+            if (value>0) {
+            
+                ISFT _sft = ISFT(_sft_address);
+                EnumerableMap.UintToUintMap storage token_withdraw = sft_token_withdraw[_sft_address];
+                (bool withdrawIsExist, uint256 withdrawBeforeValue) = token_withdraw.tryGet(token_id);
+                if (_sft.ownerOf(token_id) != _msgSender() && _sft.slotOf(token_id) != shareSlot) {
+                    revert("Not token owner"); 
+                }
+
+                if(!withdrawIsExist || (withdrawIsExist && (value*(_sft.balanceOf(token_id)/_sft._slotAmount(token_id))-withdrawBeforeValue) >= profit))
+                {
+                    IERC20 token = IERC20(payTokenAddress);
+                    token.transferFrom(address(this), _msgSender(), profit);    
+                    token_withdraw.set(token_id, withdrawBeforeValue + profit);
+                }
             }
-        }    
+        }   
     }
 
     function _shareSlot() public view returns (uint256) {
         return shareSlot;
     }
 
-    function _profitAmount(address _sft_address) public view returns (uint256) {
-        (, uint256 value) = profitSnapshotOfAt(_sft_address, _lastSnapshotId(sft_total_profit[_sft_address].ids));
+    function _profitAmount(address _sft_address, uint256 _token_id) public view returns (uint256) {
+        (, uint256 value) = profitSnapshotOfAt(_sft_address, _token_id, _lastSnapshotId(sft_token_profit[_sft_address][_token_id].ids));
         return value;
     }
 
@@ -137,25 +148,45 @@ contract KipProtocol is Ownable, ReentrancyGuard {
         }
     }
 
-    function _updateProfitSnapshot(address sft_address, uint256 profit) private {
-        if (_lastSnapshotId(sft_total_profit[sft_address].ids) < profitSnapshotId) {
-            sft_total_profit[sft_address].ids.push(profitSnapshotId);
-            sft_total_profit[sft_address].timestamp.push(block.timestamp);
-            sft_total_profit[sft_address].values.push(profit);
+    function _updateProfitSnapshot(address _sft_address, uint256 _token_id, uint256 _profit) private {
+        if (_lastSnapshotId(sft_token_profit[_sft_address][_token_id].ids) < profitSnapshotId) {
+            sft_token_profit[_sft_address][_token_id].ids.push(profitSnapshotId);
+            sft_token_profit[_sft_address][_token_id].values.push(_profit);
+            sft_token_profit[_sft_address][_token_id].timestamp.push(block.timestamp);
         }
         profitSnapshotId++;
     }
 
-    function profitSnapshotOfAt(address _sft_address, uint256 snapshot_id) public view returns (bool, uint256) {
+    function profitSnapshotOfAt(address _sft_address, uint256 _token_id, uint256 snapshot_id) public view returns (bool, uint256) {
         require(_sft_address != address(0), "ReferenceID does not exist");
         
-        snapshots storage _snapshots = sft_total_profit[_sft_address];
-        uint256 index = _snapshots.ids.findUpperBound(snapshot_id);
-        if (index == _snapshots.ids.length) {
-            return (false, 0);
-        } else {
+        snapshots storage _snapshots = sft_token_profit[_sft_address][_token_id];
+
+        (bool has_lower, uint256 index) = _findLowerBound(_snapshots.ids, snapshot_id);
+
+        if (has_lower) {
             return (true, _snapshots.values[index]);
+        } else {
+            return (false, 0);
         }
+    }
+
+    // helper function for finding the lower bound index of a value in an array
+    function _findLowerBound(uint256[] storage _array, uint256 _value) private view returns (bool, uint256) {
+        if (_array.length == 0 || _value < _array[0]) {
+            return (false, 0);
+        } else if (_value >= _array[_array.length - 1]) {
+            return (true, _array.length - 1);
+        }
+
+        uint256 index = _array.findUpperBound(_value);
+
+        if (_array[index] != _value && index != 0) {
+            index = index - 1;
+        }
+
+        return (true, index);
+        
     }
 
     function recharge(uint256 amount_) public {
