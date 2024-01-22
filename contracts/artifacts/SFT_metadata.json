@@ -278,6 +278,57 @@
 				"type": "event"
 			},
 			{
+				"inputs": [],
+				"name": "_profitEstimate",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "sft_slot",
+						"type": "uint256"
+					}
+				],
+				"name": "_slotAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "token_id",
+						"type": "uint256"
+					}
+				],
+				"name": "_tokenProfitEstimate",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -1304,12 +1355,20 @@
 				"dweb:/ipfs/QmZBr8aqYyyErUqHdGDhyZXyj4RUk2G1fsLfRtwdEC1Wf3"
 			]
 		},
-		"contracts/SFT.sol": {
-			"keccak256": "0xa39c2135ffc59ec9dc4cdf748cbb1d8964ea32709179267926d3fd3a2e38a062",
+		"contracts/IKipProtocol.sol": {
+			"keccak256": "0x05750cfa6c35d098f039b5c5d45fdf683acb96a7d3e0656d115a31c03a867291",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://6b9d638ccb3d646c1e0cc007d525ca72563ff20f5223e569e2d4e3663b4bd063",
-				"dweb:/ipfs/QmaNrDFtUdCGMLPYb5GGteExN441QqYbiMiAYdrqoQetEa"
+				"bzz-raw://b955f8ce39e897b6fb4884f76e9b5ac4d0c613959c6d22fcdcbfbceff672036c",
+				"dweb:/ipfs/QmPJR9AcXBzHj8Kac5KHPC9VSwDqekBrPfNzAoesDv34M6"
+			]
+		},
+		"contracts/SFT.sol": {
+			"keccak256": "0x3b7ab29b348d670b1bfbba392c392bf37c37afdc9b23135da1bad5c57941e3bc",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://377c5de6abd1c8c37cd36f5f67bb0ca606071cf3693bdc144f98eb8262d357c5",
+				"dweb:/ipfs/QmSFYtCxageY37M2GwawsDoqvGXR5iMjdVJbFeCk7NzXqb"
 			]
 		}
 	},

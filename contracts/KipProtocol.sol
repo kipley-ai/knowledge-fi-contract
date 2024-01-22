@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-// import "@openzeppelin/contracts/utils/Strings.sol";
+import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Arrays.sol";
@@ -96,19 +96,21 @@ contract KipProtocol is Ownable, ReentrancyGuard {
     function _allocateTokenProfit(address _sft_address, uint256 profit) private {
         ISFT _sft = ISFT(_sft_address);
         for (uint256 i = 1; i <= _sft.totalSupply(); i++) {
-            (bool snapshotted, uint256 value) = profitSnapshotOfAt(_sft_address, i, _lastSnapshotId(sft_token_profit[_sft_address][i].ids));
+            uint256 shareBalance = _sft.balanceOf(_sft.tokenByIndex(i));
+            uint256 slotAmount = _sft._slotAmount(shareSlot);
+            uint256 profitShare = calculateProfit(profit, shareBalance, slotAmount);
+            (bool snapshotted, , uint256 value,) = profitSnapshotOfAt(_sft_address, _sft.tokenByIndex(i), _lastSnapshotId(sft_token_profit[_sft_address][_sft.tokenByIndex(i)].ids));
             if (snapshotted) {
-                _updateProfitSnapshot(_sft_address, i, value + profit * (_sft.balanceOf(i) / _sft._slotAmount(i)));
-            } else {
-                _updateProfitSnapshot(_sft_address, i, profit * (_sft.balanceOf(i) / _sft._slotAmount(i)));
+                profitShare += value;
             }
+            _updateProfitSnapshot(_sft_address, _sft.tokenByIndex(i), profitShare);
         }
     }  
     
     function claimProfit(address _sft_address, uint256 token_id, uint256 profit) public {
 
         // (current time - claimInterval) has the latest withdrawable snapshot
-        (bool has_lower, uint256 index) = _findLowerBound(sft_token_profit[_sft_address][token_id].timestamp, block.timestamp - claimInterval);
+        (bool has_lower, uint256 index) = _findLastOccurrence(sft_token_profit[_sft_address][token_id].timestamp, block.timestamp - claimInterval);
 
         if (has_lower) {
             uint256 value = sft_token_profit[_sft_address][token_id].values[index];
@@ -117,11 +119,11 @@ contract KipProtocol is Ownable, ReentrancyGuard {
                 ISFT _sft = ISFT(_sft_address);
                 EnumerableMap.UintToUintMap storage token_withdraw = sft_token_withdraw[_sft_address];
                 (bool withdrawIsExist, uint256 withdrawBeforeValue) = token_withdraw.tryGet(token_id);
-                if (_sft.ownerOf(token_id) != _msgSender() && _sft.slotOf(token_id) != shareSlot) {
+                if (_sft.ownerOf(token_id) != _msgSender()) {
                     revert("Not token owner"); 
                 }
 
-                if(!withdrawIsExist || (withdrawIsExist && (value*(_sft.balanceOf(token_id)/_sft._slotAmount(token_id))-withdrawBeforeValue) >= profit))
+                if(!withdrawIsExist || (withdrawIsExist && (value-withdrawBeforeValue) >= profit))
                 {
                     IERC20 token = IERC20(payTokenAddress);
                     token.transferFrom(address(this), _msgSender(), profit);    
@@ -131,13 +133,60 @@ contract KipProtocol is Ownable, ReentrancyGuard {
         }   
     }
 
+    function _findLastOccurrence(uint256[] storage array, uint256 element) private view returns (bool, uint256) {
+        if (array.length == 0) {
+            return (false, 0);
+        }
+
+        uint256 low = 0;
+        uint256 high = array.length - 1; // Adjust high to be the last index
+        uint256 result = array.length; // Initialize result to an invalid index
+
+        while (low <= high) {
+            uint256 mid = Math.average(low, high);
+
+            if (array[mid] <= element) {
+                low = mid + 1; // Move right if the element is greater than or equal to the target
+                if (array[mid] == element) {
+                    result = mid; // Update result if current element is equal to the target
+                }
+            } else {
+                high = mid - 1; // Move left if the element is less than the target
+            }
+        }
+
+        // If result is not updated, it means the element is not found, return the largest index with value less than 'element'.
+        // Otherwise, return the last occurrence of the element.
+        if (result == array.length) {
+            return (false, high >= 0 ? high : 0); // Adjust for the case when all elements are greater than 'element'
+        }
+        return (false, result);
+    }
+
+    function calculateProfit(uint256 profit, uint256 shareBalance, uint256 slotAmount) private pure returns (uint256) {
+        if (slotAmount == 0 || profit ==0 || shareBalance == 0) {
+            return 0;
+        }
+        uint256 result = Math.mulDiv(profit, shareBalance, slotAmount);
+
+        return result;
+    }
+
     function _shareSlot() public view returns (uint256) {
         return shareSlot;
     }
 
     function _profitAmount(address _sft_address, uint256 _token_id) public view returns (uint256) {
-        (, uint256 value) = profitSnapshotOfAt(_sft_address, _token_id, _lastSnapshotId(sft_token_profit[_sft_address][_token_id].ids));
-        return value;
+
+        (bool has_lower, uint256 index) = _findLastOccurrence(sft_token_profit[_sft_address][_token_id].timestamp, block.timestamp - claimInterval);
+
+        if (has_lower) {
+            uint256 value = sft_token_profit[_sft_address][_token_id].values[index];
+            if (value>0) {
+                return value;
+            }
+        }   
+        return 0;
     }
 
     function _lastSnapshotId(uint256[] storage ids) private view returns (uint256) {
@@ -157,37 +206,37 @@ contract KipProtocol is Ownable, ReentrancyGuard {
         profitSnapshotId++;
     }
 
-    function profitSnapshotOfAt(address _sft_address, uint256 _token_id, uint256 snapshot_id) public view returns (bool, uint256) {
+    function profitSnapshotOfAt(address _sft_address, uint256 _token_id, uint256 snapshot_id) public view returns (bool, uint256, uint256, uint256) {
         require(_sft_address != address(0), "ReferenceID does not exist");
         
         snapshots storage _snapshots = sft_token_profit[_sft_address][_token_id];
 
-        (bool has_lower, uint256 index) = _findLowerBound(_snapshots.ids, snapshot_id);
+        (bool has_lower, uint256 index) = _findLastOccurrence(_snapshots.ids, snapshot_id);
 
         if (has_lower) {
-            return (true, _snapshots.values[index]);
+            return (true, index, _snapshots.values[index], _snapshots.timestamp[index]);
         } else {
-            return (false, 0);
+            return (false, 0, 0, 0);
         }
     }
 
     // helper function for finding the lower bound index of a value in an array
-    function _findLowerBound(uint256[] storage _array, uint256 _value) private view returns (bool, uint256) {
-        if (_array.length == 0 || _value < _array[0]) {
-            return (false, 0);
-        } else if (_value >= _array[_array.length - 1]) {
-            return (true, _array.length - 1);
-        }
+    // function _findLowerBound(uint256[] storage _array, uint256 _value) private view returns (bool, uint256) {
+    //     if (_array.length == 0 || _value < _array[0]) {
+    //         return (false, 0);
+    //     } else if (_value >= _array[_array.length - 1]) {
+    //         return (true, _array.length - 1);
+    //     }
 
-        uint256 index = _array.findUpperBound(_value);
+    //     uint256 index = _array.findUpperBound(_value);
 
-        if (_array[index] != _value && index != 0) {
-            index = index - 1;
-        }
+    //     if (_array[index] != _value && index != 0) {
+    //         index = index - 1;
+    //     }
 
-        return (true, index);
+    //     return (true, index);
         
-    }
+    // }
 
     function recharge(uint256 amount_) public {
         IERC20 token = IERC20(payTokenAddress);

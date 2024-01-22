@@ -11,6 +11,11 @@
 						"internalType": "address",
 						"name": "_sft_address",
 						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_token_id",
+						"type": "uint256"
 					}
 				],
 				"name": "_profitAmount",
@@ -25,9 +30,146 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "_shareSlot",
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_sft_address",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "token_id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "profit",
+						"type": "uint256"
+					}
+				],
+				"name": "claimProfit",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "_consumer",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "_amount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "asset_id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "invoice_id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "order_id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "order_timestamp",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct IKipProtocol.invoice[]",
+						"name": "_invoice",
+						"type": "tuple[]"
+					}
+				],
+				"name": "createInvoice",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name_",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "symbol_",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "slot_value",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "token_amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "asset_id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "token_owner",
+						"type": "address"
+					}
+				],
+				"name": "createSFT",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_sft_address",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_token_id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "snapshot_id",
+						"type": "uint256"
+					}
+				],
+				"name": "profitSnapshotOfAt",
 				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
 					{
 						"internalType": "uint256",
 						"name": "",
@@ -66,11 +208,11 @@
 	},
 	"sources": {
 		"contracts/IKipProtocol.sol": {
-			"keccak256": "0x05750cfa6c35d098f039b5c5d45fdf683acb96a7d3e0656d115a31c03a867291",
+			"keccak256": "0x769175a78c8effb86d9c526a082d26b72b7452efbad630bdf8b2e2e1800d1e83",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://b955f8ce39e897b6fb4884f76e9b5ac4d0c613959c6d22fcdcbfbceff672036c",
-				"dweb:/ipfs/QmPJR9AcXBzHj8Kac5KHPC9VSwDqekBrPfNzAoesDv34M6"
+				"bzz-raw://36685a74b1895bfffca88a79766127c4732308d6e7ae80c36486c8060b217fa1",
+				"dweb:/ipfs/QmNMd2n4kBXZzu1BmE6SpmYipwPCJauv5BrQW8WG9SCmuR"
 			]
 		}
 	},

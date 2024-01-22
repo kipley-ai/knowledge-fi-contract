@@ -49,8 +49,11 @@
 		},
 		"gasEstimates": null,
 		"methodIdentifiers": {
-			"_profitAmount(address)": "a0714e58",
-			"_shareSlot()": "13d18a24"
+			"_profitAmount(address,uint256)": "38c0ee2d",
+			"claimProfit(address,uint256,uint256)": "58029cac",
+			"createInvoice((address,uint256,uint256,uint256,uint256,uint256)[])": "0b4dda79",
+			"createSFT(string,string,uint256,uint256,uint256,address)": "87c2aa5f",
+			"profitSnapshotOfAt(address,uint256,uint256)": "aa87673e"
 		}
 	},
 	"abi": [
@@ -60,6 +63,11 @@
 					"internalType": "address",
 					"name": "_sft_address",
 					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_token_id",
+					"type": "uint256"
 				}
 			],
 			"name": "_profitAmount",
@@ -74,9 +82,146 @@
 			"type": "function"
 		},
 		{
-			"inputs": [],
-			"name": "_shareSlot",
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_sft_address",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "token_id",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "profit",
+					"type": "uint256"
+				}
+			],
+			"name": "claimProfit",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"components": [
+						{
+							"internalType": "address",
+							"name": "_consumer",
+							"type": "address"
+						},
+						{
+							"internalType": "uint256",
+							"name": "_amount",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint256",
+							"name": "asset_id",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint256",
+							"name": "invoice_id",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint256",
+							"name": "order_id",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint256",
+							"name": "order_timestamp",
+							"type": "uint256"
+						}
+					],
+					"internalType": "struct IKipProtocol.invoice[]",
+					"name": "_invoice",
+					"type": "tuple[]"
+				}
+			],
+			"name": "createInvoice",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "name_",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "symbol_",
+					"type": "string"
+				},
+				{
+					"internalType": "uint256",
+					"name": "slot_value",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "token_amount",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "asset_id",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address",
+					"name": "token_owner",
+					"type": "address"
+				}
+			],
+			"name": "createSFT",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_sft_address",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_token_id",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "snapshot_id",
+					"type": "uint256"
+				}
+			],
+			"name": "profitSnapshotOfAt",
 			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				},
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				},
 				{
 					"internalType": "uint256",
 					"name": "",
