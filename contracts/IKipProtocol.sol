@@ -22,6 +22,8 @@ interface IKipProtocol {
 
     function createInvoice(invoice[] memory _invoice) external;
 
+    function _shareSlot() external view returns (uint256);
+    
     function claimProfit(
         address _sft_address,
         uint256 token_id,
@@ -38,4 +40,9 @@ interface IKipProtocol {
         uint256 _token_id,
         uint256 snapshot_id
     ) external view returns (bool, uint256, uint256, uint256);
+
+    function recharge(
+        uint256 amount_
+    ) external;
+
 }

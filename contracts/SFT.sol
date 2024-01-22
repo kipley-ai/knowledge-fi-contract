@@ -42,10 +42,10 @@ contract SFT is Context, ERC3525SlotApprovable, Ownable {
         baseURI = newuri;
     }
 
-    function _profitEstimate() public view returns (uint256) {
-        IKipProtocol Kip = IKipProtocol(owner());
-        return Kip._profitAmount(address(this));
-    }
+    // function _profitEstimate() public view returns (uint256) {
+    //     IKipProtocol Kip = IKipProtocol(owner());
+    //     return Kip._profitAmount(address(this));
+    // }
 
     function _tokenProfitEstimate(uint256 token_id) public view returns (uint256) {
         IKipProtocol Kip = IKipProtocol(owner());
@@ -53,7 +53,7 @@ contract SFT is Context, ERC3525SlotApprovable, Ownable {
         if(slotOf(token_id) != shareSlot) {
             revert("No match share slot"); 
         }
-        return (Kip._profitAmount(address(this))*(balanceOf(token_id)/_slotAmount(token_id)));
+        return Kip._profitAmount(address(this), token_id);
     }
 
     function _slotAmount(uint256 sft_slot) public view returns (uint256) {

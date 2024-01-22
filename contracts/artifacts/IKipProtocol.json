@@ -50,10 +50,12 @@
 		"gasEstimates": null,
 		"methodIdentifiers": {
 			"_profitAmount(address,uint256)": "38c0ee2d",
+			"_shareSlot()": "13d18a24",
 			"claimProfit(address,uint256,uint256)": "58029cac",
 			"createInvoice((address,uint256,uint256,uint256,uint256,uint256)[])": "0b4dda79",
 			"createSFT(string,string,uint256,uint256,uint256,address)": "87c2aa5f",
-			"profitSnapshotOfAt(address,uint256,uint256)": "aa87673e"
+			"profitSnapshotOfAt(address,uint256,uint256)": "aa87673e",
+			"recharge(uint256)": "ef299b0b"
 		}
 	},
 	"abi": [
@@ -71,6 +73,19 @@
 				}
 			],
 			"name": "_profitAmount",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "_shareSlot",
 			"outputs": [
 				{
 					"internalType": "uint256",
@@ -229,6 +244,19 @@
 				}
 			],
 			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "amount_",
+					"type": "uint256"
+				}
+			],
+			"name": "recharge",
+			"outputs": [],
+			"stateMutability": "nonpayable",
 			"type": "function"
 		}
 	]

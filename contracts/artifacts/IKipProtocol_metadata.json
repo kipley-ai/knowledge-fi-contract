@@ -30,6 +30,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "_shareSlot",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -178,6 +191,19 @@
 				],
 				"stateMutability": "view",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount_",
+						"type": "uint256"
+					}
+				],
+				"name": "recharge",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -208,11 +234,11 @@
 	},
 	"sources": {
 		"contracts/IKipProtocol.sol": {
-			"keccak256": "0x769175a78c8effb86d9c526a082d26b72b7452efbad630bdf8b2e2e1800d1e83",
+			"keccak256": "0xc0aef37ef73114a02d1127d0b606fc4f977fa751ed838d596cd75e25dbafa72d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://36685a74b1895bfffca88a79766127c4732308d6e7ae80c36486c8060b217fa1",
-				"dweb:/ipfs/QmNMd2n4kBXZzu1BmE6SpmYipwPCJauv5BrQW8WG9SCmuR"
+				"bzz-raw://cc3567fb9b4ce81ff0fb3d18b5cf7be1c1d9206e5da0c189482d7def12b70ac8",
+				"dweb:/ipfs/QmWCJLXKPn6SLXoAMtcAkJFCKPPEqGoSmKCbHboBLXn1Zn"
 			]
 		}
 	},
