@@ -1,33 +1,41 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/Arrays.sol";
+// add necessary upgradable libraries
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableMapUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ArraysUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+
 import "./ISFT.sol";
 // import "./ABDKMathQuad.sol";
 import {SFT} from "./SFT.sol";
 
-contract KnowledgeFi is Ownable, ReentrancyGuard {
-    using Arrays for uint256[];
-    using EnumerableMap for EnumerableMap.UintToUintMap;
+//add inheritance
+contract KnowledgeFi is Initializable, OwnableUpgradeable, ReentrancyGuardUpgradeable, UUPSUpgradeable {
+// from Arrays to ArraysUpgradeable and from EnumerableMap to EnumerableMapUpgradeable
+    using ArraysUpgradeable for uint256[];
+    using EnumerableMapUpgradeable for EnumerableMapUpgradeable.UintToUintMap;
     
     address public payTokenAddress; // 0xa6fb168a1264075946a2f7cb08384f5a7ab2f05b
     uint256 public commissionRate; // 1000 / 10000
-    uint256 public profitSnapshotId;
-    uint256 public claimInterval; // 1,296,000 = 15 days
+// set values as it is not possible to do in the constructor
+    uint256 public profitSnapshotId = 1;
+    uint256 public claimInterval = 100; // 1,296,000 = 15 days
 
-    uint256 public shareSlot; // 999999
+    uint256 public shareSlot = 999999; // 999999
 
     SFT private sft_entry;
 
     mapping(uint256 => address) public sft_assets; 
     mapping(address => uint256) public consumer_balance;
     mapping(address => bool) public service_provider;
-    mapping(address => EnumerableMap.UintToUintMap) private sft_token_withdraw;
+// from EnumerableMap to EnumerableMapUpgradeable
+    mapping(address => EnumerableMapUpgradeable.UintToUintMap) private sft_token_withdraw;
 
     struct invoice{
         address _consumer;
@@ -56,18 +64,20 @@ contract KnowledgeFi is Ownable, ReentrancyGuard {
     event ProfitSnapshotUpdated(address _sft_address, uint256 _token_id, uint256 _profit);
     event ProfitClaimed(address _sft_address, uint256 token_id, uint256 profit);
 
-    constructor(address initialOwner, address pay_token, uint256 commission_rate) Ownable(initialOwner) {
+// Initializer instead of the constructor
+    function initialize(address initialOwner, address pay_token, uint256 commission_rate) public initializer {
+        __Ownable_init(initialOwner);
+        __ReentrancyGuard_init();
         payTokenAddress = pay_token;
         commissionRate = commission_rate;
-        claimInterval = 100; // 100 for test
-        shareSlot = 999999;
-        profitSnapshotId = 1;
     }
 
     function createSFT(string memory name_, string memory symbol_, uint256 slot_value, uint256 token_amount, uint256 asset_id, address token_owner) public {
         //require(sft_entry.owner() == address(this), "Not a owner");
         require(sft_assets[asset_id] == address(0), "Already created");
-        sft_entry = new SFT(address(this), name_ ,symbol_ );
+// a little bit changes due to specific of deploy with a proxy
+        sft_entry = new SFT();
+        sft_entry.initialize(address(this), name_, symbol_);
 
         for (uint256 i = 1; i <= token_amount; i++) {
             sft_entry.mint(token_owner, shareSlot, slot_value);
@@ -119,7 +129,8 @@ contract KnowledgeFi is Ownable, ReentrancyGuard {
             if (value>0) {
             
                 ISFT _sft = ISFT(_sft_address);
-                EnumerableMap.UintToUintMap storage token_withdraw = sft_token_withdraw[_sft_address];
+// from EnumerableMap to EnumerableMapUpgradeable
+                EnumerableMapUpgradeable.UintToUintMap storage token_withdraw = sft_token_withdraw[_sft_address];
                 (bool withdrawIsExist, uint256 withdrawBeforeValue) = token_withdraw.tryGet(token_id);
                 if (_sft.ownerOf(token_id) != _msgSender()) {
                     revert("Not token owner"); 
@@ -127,7 +138,8 @@ contract KnowledgeFi is Ownable, ReentrancyGuard {
 
                 if(!withdrawIsExist || (withdrawIsExist && (value-withdrawBeforeValue) >= profit))
                 {
-                    IERC20 token = IERC20(payTokenAddress);
+// from IERC20 to IERC20Upgradeable
+                    IERC20Upgradeable token = IERC20Upgradeable(payTokenAddress);
                     token.transferFrom(address(this), _msgSender(), profit);    
                     token_withdraw.set(token_id, withdrawBeforeValue + profit);
                 }
@@ -244,7 +256,8 @@ contract KnowledgeFi is Ownable, ReentrancyGuard {
     // }
 
     function recharge(uint256 amount_) public {
-        IERC20 token = IERC20(payTokenAddress);
+// from IERC20 to IERC20Upgradeable
+        IERC20Upgradeable token = IERC20Upgradeable(payTokenAddress);
         token.transferFrom(_msgSender(), address(this), amount_);
         consumer_balance[_msgSender()] += amount_;
         emit ConsumerBalanceRecharged(_msgSender(),amount_);
@@ -264,4 +277,6 @@ contract KnowledgeFi is Ownable, ReentrancyGuard {
         service_provider[_address] = _enabled;
         emit ServiceProviderChanged(_address, _enabled);
     }
+// obligatory function for a proxy
+function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 }
