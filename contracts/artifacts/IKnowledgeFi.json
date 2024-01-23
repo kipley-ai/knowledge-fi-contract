@@ -154,7 +154,7 @@
 							"type": "uint256"
 						}
 					],
-					"internalType": "struct IKipProtocol.invoice[]",
+					"internalType": "struct IKnowledgeFi.invoice[]",
 					"name": "_invoice",
 					"type": "tuple[]"
 				}

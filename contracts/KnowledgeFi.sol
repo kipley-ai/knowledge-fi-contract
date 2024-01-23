@@ -11,7 +11,7 @@ import "./ISFT.sol";
 // import "./ABDKMathQuad.sol";
 import {SFT} from "./SFT.sol";
 
-contract KipProtocol is Ownable, ReentrancyGuard {
+contract KnowledgeFi is Ownable, ReentrancyGuard {
     using Arrays for uint256[];
     using EnumerableMap for EnumerableMap.UintToUintMap;
     
@@ -53,6 +53,8 @@ contract KipProtocol is Ownable, ReentrancyGuard {
     event TokenCreated(address sft_address, uint256 slot_value, uint256 token_amount, uint256 asset_id, address owner_address);
     event PayTokenChanged(address token_address);
     event InvoiceCreated(invoice[] _invoice);
+    event ProfitSnapshotUpdated(address _sft_address, uint256 _token_id, uint256 _profit);
+    event ProfitClaimed(address _sft_address, uint256 token_id, uint256 profit);
 
     constructor(address initialOwner, address pay_token, uint256 commission_rate) Ownable(initialOwner) {
         payTokenAddress = pay_token;
@@ -129,6 +131,8 @@ contract KipProtocol is Ownable, ReentrancyGuard {
                     token.transferFrom(address(this), _msgSender(), profit);    
                     token_withdraw.set(token_id, withdrawBeforeValue + profit);
                 }
+
+                emit ProfitClaimed(_sft_address, token_id, profit);
             }
         }   
     }
@@ -202,6 +206,7 @@ contract KipProtocol is Ownable, ReentrancyGuard {
             sft_token_profit[_sft_address][_token_id].ids.push(profitSnapshotId);
             sft_token_profit[_sft_address][_token_id].values.push(_profit);
             sft_token_profit[_sft_address][_token_id].timestamp.push(block.timestamp);
+            emit ProfitSnapshotUpdated(_sft_address, _token_id, _profit);
         }
         profitSnapshotId++;
     }
