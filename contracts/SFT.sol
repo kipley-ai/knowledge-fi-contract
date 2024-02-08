@@ -47,16 +47,16 @@ contract SFT is Context, ERC3525SlotApprovable, Ownable {
     //     return Kip._profitAmount(address(this));
     // }
 
-    function _tokenProfit(uint256 token_id) public view returns (uint256) {
+    function tokenIncome(uint256 token_id) public view returns (uint256) {
         IKnowledgeFi Kip = IKnowledgeFi(owner());
         uint256 shareSlot = Kip._shareSlot();
         if(slotOf(token_id) != shareSlot) {
             revert("No match share slot"); 
         }
-        return Kip._profitAmount(address(this), token_id);
+        return Kip.tokenIncome(address(this), token_id);
     }
 
-    function _slotAmount(uint256 sft_slot) public view returns (uint256) {
+    function slotAmount(uint256 sft_slot) public view returns (uint256) {
         uint256 slot_amount = 0;
         for (uint256 j = 0; j < tokenSupplyInSlot(sft_slot); j++) {
             uint256 _sft_token_id = tokenInSlotByIndex(sft_slot,j);

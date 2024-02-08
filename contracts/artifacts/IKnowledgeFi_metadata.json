@@ -1,33 +1,178 @@
 {
 	"compiler": {
-		"version": "0.8.22+commit.4fc1097e"
+		"version": "0.8.20+commit.a1b79de6"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [
 			{
+				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "new_fee",
+						"type": "uint256"
+					}
+				],
+				"name": "CommissionRateChanged",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
 						"internalType": "address",
-						"name": "_sft_address",
+						"name": "wallet_address",
 						"type": "address"
 					},
 					{
+						"indexed": false,
 						"internalType": "uint256",
-						"name": "_token_id",
+						"name": "amount",
 						"type": "uint256"
 					}
 				],
-				"name": "_profitAmount",
-				"outputs": [
+				"name": "ConsumerBalanceRecharged",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
 					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "sft_address",
+						"type": "address"
+					},
+					{
+						"indexed": false,
 						"internalType": "uint256",
-						"name": "",
+						"name": "token_id",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
 						"type": "uint256"
 					}
 				],
-				"stateMutability": "view",
-				"type": "function"
+				"name": "IncomeClaimed",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "invoice_id",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "consumer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "sft_address",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "reference_id",
+						"type": "string"
+					}
+				],
+				"name": "InvoiceCreated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "token_address",
+						"type": "address"
+					}
+				],
+				"name": "PayTokenChanged",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "provider_address",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bool",
+						"name": "enabled",
+						"type": "bool"
+					}
+				],
+				"name": "ServiceProviderChanged",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "sft_address",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "slot_value",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "token_amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "asset_id",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "owner_address",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "reference_id",
+						"type": "string"
+					}
+				],
+				"name": "TokenCreated",
+				"type": "event"
 			},
 			{
 				"inputs": [],
@@ -46,7 +191,7 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_sft_address",
+						"name": "sft_address",
 						"type": "address"
 					},
 					{
@@ -56,11 +201,39 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "profit",
+						"name": "amount",
 						"type": "uint256"
 					}
 				],
-				"name": "claimProfit",
+				"name": "claimIncome",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "consumer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "sft_address",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "reference_id",
+						"type": "string"
+					}
+				],
+				"name": "createInvoice",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -71,33 +244,23 @@
 						"components": [
 							{
 								"internalType": "address",
-								"name": "_consumer",
+								"name": "consumer",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "sft_address",
 								"type": "address"
 							},
 							{
 								"internalType": "uint256",
-								"name": "_amount",
+								"name": "amount",
 								"type": "uint256"
 							},
 							{
-								"internalType": "uint256",
-								"name": "asset_id",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "invoice_id",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "order_id",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "order_timestamp",
-								"type": "uint256"
+								"internalType": "string",
+								"name": "reference_id",
+								"type": "string"
 							}
 						],
 						"internalType": "struct IKnowledgeFi.invoice[]",
@@ -105,7 +268,7 @@
 						"type": "tuple[]"
 					}
 				],
-				"name": "createInvoice",
+				"name": "createInvoiceBatch",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -133,14 +296,14 @@
 						"type": "uint256"
 					},
 					{
-						"internalType": "uint256",
-						"name": "asset_id",
-						"type": "uint256"
-					},
-					{
 						"internalType": "address",
 						"name": "token_owner",
 						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "reference_id",
+						"type": "string"
 					}
 				],
 				"name": "createSFT",
@@ -151,38 +314,75 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "recharge",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "newrate",
+						"type": "uint256"
+					}
+				],
+				"name": "setCommissionRate",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address",
-						"name": "_sft_address",
+						"name": "newtoken",
+						"type": "address"
+					}
+				],
+				"name": "setPriceToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "enabled",
+						"type": "bool"
+					}
+				],
+				"name": "setServiceProvider",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "sft_address",
 						"type": "address"
 					},
 					{
 						"internalType": "uint256",
-						"name": "_token_id",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "snapshot_id",
+						"name": "token_id",
 						"type": "uint256"
 					}
 				],
-				"name": "profitSnapshotOfAt",
+				"name": "tokenIncome",
 				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					},
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					},
 					{
 						"internalType": "uint256",
 						"name": "",
@@ -190,19 +390,6 @@
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "amount_",
-						"type": "uint256"
-					}
-				],
-				"name": "recharge",
-				"outputs": [],
-				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -227,18 +414,18 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
 		"contracts/IKnowledgeFi.sol": {
-			"keccak256": "0x600ff409cc399b83db464b6a5ae7508abf8d7fb605f2edbf58c5bc01325b1408",
+			"keccak256": "0xbeb39a2eadcd96121504c84789ce41ce9e34b6821f56afd847717c13fa442fb6",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://633627ffcbdbc43259c1afa6ef54c673a63dd67128a40aef0b1533cf11949d07",
-				"dweb:/ipfs/QmcFur46aRq9yUepj6pj3nRtXFSxJDAT5dBme7x6Facy1i"
+				"bzz-raw://7c66b0cb73ad39a8288d83efcfac8adfea0e305334b6dfe62862e9fc8b098be7",
+				"dweb:/ipfs/QmTE4RRSFT1Tq4oHKbzC1433SN8AcsB8ArN4fw24wLwx3N"
 			]
 		}
 	},

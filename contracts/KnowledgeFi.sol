@@ -6,168 +6,196 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableMap.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/Arrays.sol";
+// import "@openzeppelin/contracts/utils/Arrays.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+
 import "./ISFT.sol";
 // import "./ABDKMathQuad.sol";
 import {SFT} from "./SFT.sol";
 
 contract KnowledgeFi is Ownable, ReentrancyGuard {
-    using Arrays for uint256[];
+    // using Arrays for uint256[];
     using EnumerableMap for EnumerableMap.UintToUintMap;
     
-    address public payTokenAddress; // 0xa6fb168a1264075946a2f7cb08384f5a7ab2f05b
-    uint256 public commissionRate; // 1000 / 10000
-    uint256 public profitSnapshotId;
-    uint256 public claimInterval; // 1,296,000 = 15 days
+    address public payTokenAddress; // 0xc4ed2a23ad535d771ab49e0fe5664225b13cbb59
+    address public fundAddress; // 0xdF87890D39E2a97F9fd05d2d240Ce65fF6E0E07c
+    string public SFTBaseURI;
+    // uint256 public commissionRate; // 1000 / 10000
+    // uint256 public profitSnapshotId;
+    uint256 public assetId;
+    uint256 public invoiceId;
+    // uint256 public claimInterval; // 1,296,000 = 15 days
 
     uint256 public shareSlot; // 999999
 
     SFT private sft_entry;
 
     mapping(uint256 => address) public sft_assets; 
+    mapping(address => uint256) public sft_total_income;
     mapping(address => uint256) public consumer_balance;
     mapping(address => bool) public service_provider;
-    mapping(address => EnumerableMap.UintToUintMap) private sft_token_withdraw;
+    // mapping(address => EnumerableMap.UintToUintMap) private sft_token_claimed;
+    mapping(address => EnumerableMap.UintToUintMap) private sft_token_income;
 
     struct invoice{
-        address _consumer;
-        uint256 _amount;
-        uint256 asset_id;
-        uint256 invoice_id;
-        uint256 order_id;
-        uint256 order_timestamp;
+        address consumer;
+        address sft_address;
+        uint256 amount;
+        string reference_id;
     }
 
-    struct snapshots {
-        uint256[] ids;
-        uint256[] values;
-        uint256[] timestamp;
-    }
+    // mapping(uint256 => invoice) public sft_invoices;
+
+    // struct snapshots {
+    //     uint256[] ids;
+    //     uint256[] values;
+    //     uint256[] timestamp;
+    // }
     
-    // mapping(address => snapshots) private sft_total_profit;
-    mapping(address => mapping(uint256 => snapshots)) private sft_token_profit;
-
-    event CommissionRateChanged(uint256 newfee_);
-    event ServiceProviderChanged(address _providerAddress, bool _enabled);
-    event ConsumerBalanceRecharged(address _walletAddress, uint256 amount_);
-    event TokenCreated(address sft_address, uint256 slot_value, uint256 token_amount, uint256 asset_id, address owner_address);
+    // mapping(address => mapping(uint256 => snapshots)) private sft_token_profit;
+    event FundAddressChanged(address _address);
+    // event CommissionRateChanged(uint256 new_fee);
+    event ServiceProviderChanged(address provider_address, bool enabled);
+    event ConsumerBalanceRecharged(address wallet_address, uint256 amount);
+    event TokenCreated(address sft_address, uint256 slot_value, uint256 token_amount, uint256 asset_id, address owner_address, string reference_id);
+    event SFTBaseURIChanged(address sft_address,string new_uri);
     event PayTokenChanged(address token_address);
-    event InvoiceCreated(invoice[] _invoice);
-    event ProfitSnapshotUpdated(address _sft_address, uint256 _token_id, uint256 _profit);
-    event ProfitClaimed(address _sft_address, uint256 token_id, uint256 profit);
+    event InvoiceCreated(uint256 invoice_id, address consumer, address sft_address, uint256 amount, string reference_id);
+    // event ProfitSnapshotUpdated(address _sft_address, uint256 _token_id, uint256 _profit);
+    event IncomeClaimed(address sft_address, uint256 token_id, uint256 amount);
 
-    constructor(address initialOwner, address pay_token, uint256 commission_rate) Ownable(initialOwner) {
+    constructor(address initialOwner, address pay_token, address fund_address, string memory sft_base_uri) Ownable(initialOwner) {
         payTokenAddress = pay_token;
-        commissionRate = commission_rate;
-        claimInterval = 100; // 100 for test
+        fundAddress = fund_address;
+        // claimInterval = 100; // 100 for test
         shareSlot = 999999;
-        profitSnapshotId = 1;
+        // profitSnapshotId = 0;
+        assetId = 0;
+        invoiceId = 0;
+        SFTBaseURI = sft_base_uri; // https://kip-webhook.madeinchina.eu.org/metadata/knowledge_fi/
     }
 
-    function createSFT(string memory name_, string memory symbol_, uint256 slot_value, uint256 token_amount, uint256 asset_id, address token_owner) public {
+    function createSFT(string memory _name, string memory _symbol, uint256 slot_value, uint256 token_amount, address token_owner, string memory reference_id) public {
         //require(sft_entry.owner() == address(this), "Not a owner");
-        require(sft_assets[asset_id] == address(0), "Already created");
-        sft_entry = new SFT(address(this), name_ ,symbol_ );
+        //require(sft_assets[asset_id] == address(0), "Already created");
+        assetId++;
+        sft_entry = new SFT(address(this), _name ,_symbol );
 
         for (uint256 i = 1; i <= token_amount; i++) {
             sft_entry.mint(token_owner, shareSlot, slot_value);
         }
-        sft_assets[asset_id] = address(sft_entry);
-
-        emit TokenCreated(address(sft_entry), slot_value, token_amount, asset_id, token_owner);
+        setSFTBaseURI(address(sft_entry),string.concat(SFTBaseURI,Strings.toHexString(address(sft_entry)),'/'));
+        sft_assets[assetId] = address(sft_entry);
+        emit TokenCreated(address(sft_entry), slot_value, token_amount, assetId, token_owner, reference_id);
     }
 
-    function createInvoice(invoice[] memory _invoice) public {
+    function setSFTBaseURI(address sft_address, string memory new_uri) public onlyOwner {
+        ISFT _sft = ISFT(sft_address);
+        _sft.setBaseURI(new_uri);
+        emit SFTBaseURIChanged(sft_address, new_uri);
+    }
+
+    function createInvoiceBatch(invoice[] memory _invoice) public {
         require(service_provider[_msgSender()], "Not a provider");
         for (uint256 i = 0; i < _invoice.length; i++) {
-            address _sft_address = sft_assets[_invoice[i].asset_id];
-            require(_sft_address != address(0), "ReferenceID does not exist");
-
-            _allocateTokenProfit(_sft_address, _invoice[i]._amount);
-
-            if (consumer_balance[_invoice[i]._consumer] < _invoice[i]._amount) {
-                revert("Not enough balance"); 
-            }else{
-                consumer_balance[_invoice[i]._consumer] -= _invoice[i]._amount;
-            }
+            createInvoice(_invoice[i].consumer, _invoice[i].sft_address, _invoice[i].amount, _invoice[i].reference_id);
         }
-        emit InvoiceCreated(_invoice);
+    }
+
+    function createInvoice(address consumer, address sft_address, uint256 amount, string memory reference_id) public {
+        require(service_provider[_msgSender()], "Not a provider");
+        // address _sft_address = sft_assets[sft_address];
+        require(sft_address != address(0), "ReferenceID does not exist");
+
+        if (consumer_balance[consumer] < amount) {
+            revert("Not enough balance"); 
+        }else{
+            consumer_balance[consumer] -= amount;
+        }
+
+        _allocateTokenIncome(sft_address, amount);
+        sft_total_income[sft_address] += amount;
+        invoiceId++;
+        // sft_invoices[invoiceId] = invoice(consumer, asset_id, amount, reference_id);
+        emit InvoiceCreated(invoiceId, consumer, sft_address, amount, reference_id);
     }
 
     // allocate profit to each token as snapshot
-    function _allocateTokenProfit(address _sft_address, uint256 profit) private {
+    function _allocateTokenIncome(address _sft_address, uint256 amount) private {
         ISFT _sft = ISFT(_sft_address);
-        for (uint256 i = 1; i <= _sft.totalSupply(); i++) {
+        for (uint256 i = 0; i < _sft.totalSupply(); i++) {
             uint256 shareBalance = _sft.balanceOf(_sft.tokenByIndex(i));
-            uint256 slotAmount = _sft._slotAmount(shareSlot);
-            uint256 profitShare = calculateProfit(profit, shareBalance, slotAmount);
-            (bool snapshotted, , uint256 value,) = profitSnapshotOfAt(_sft_address, _sft.tokenByIndex(i), _lastSnapshotId(sft_token_profit[_sft_address][_sft.tokenByIndex(i)].ids));
-            if (snapshotted) {
-                profitShare += value;
+            uint256 slotAmount = _sft.slotAmount(shareSlot);
+            uint256 incomeShare = _calculate(amount, shareBalance, slotAmount);
+            EnumerableMap.UintToUintMap storage token_income = sft_token_income[_sft_address];
+            (bool incomeIsExist, uint256 incomeBeforeValue) = token_income.tryGet(_sft.tokenByIndex(i));
+
+            // (bool snapshotted, , uint256 value,) = profitSnapshotOfAt(_sft_address, _sft.tokenByIndex(i), _lastSnapshotId(sft_token_profit[_sft_address][_sft.tokenByIndex(i)].ids));
+            if (incomeIsExist) {
+                token_income.set(_sft.tokenByIndex(i), incomeBeforeValue + incomeShare);
+                // profitShare += value;
+            }else{
+                token_income.set(_sft.tokenByIndex(i), incomeShare);
             }
-            _updateProfitSnapshot(_sft_address, _sft.tokenByIndex(i), profitShare);
+            // _updateProfitSnapshot(_sft_address, _sft.tokenByIndex(i), profitShare);
         }
     }  
     
-    function claimProfit(address _sft_address, uint256 token_id, uint256 profit) public {
-
+    function claimIncome(address sft_address, uint256 token_id, uint256 amount) public {
         // (current time - claimInterval) has the latest withdrawable snapshot
-        (bool has_lower, uint256 index) = _findLastOccurrence(sft_token_profit[_sft_address][token_id].timestamp, block.timestamp - claimInterval);
-
-        if (has_lower) {
-            uint256 value = sft_token_profit[_sft_address][token_id].values[index];
-            if (value>0) {
-            
-                ISFT _sft = ISFT(_sft_address);
-                EnumerableMap.UintToUintMap storage token_withdraw = sft_token_withdraw[_sft_address];
-                (bool withdrawIsExist, uint256 withdrawBeforeValue) = token_withdraw.tryGet(token_id);
+        // (bool has_lower, uint256 index) = _findLastOccurrence(sft_token_profit[_sft_address][token_id].timestamp, block.timestamp - claimInterval);
+        EnumerableMap.UintToUintMap storage token_income = sft_token_income[sft_address];
+        // if (has_lower) {
+            (bool incomeIsExist, uint256 incomeBeforeValue) = token_income.tryGet(token_id);
+            if (incomeIsExist) {
+                ISFT _sft = ISFT(sft_address);
+                // EnumerableMap.UintToUintMap storage token_withdraw = sft_token_withdraw[_sft_address];
+                // (bool withdrawIsExist, uint256 withdrawBeforeValue) = token_withdraw.tryGet(token_id);
                 if (_sft.ownerOf(token_id) != _msgSender()) {
                     revert("Not token owner"); 
                 }
-
-                if(!withdrawIsExist || (withdrawIsExist && (value-withdrawBeforeValue) >= profit))
+                if(incomeBeforeValue >= amount)
                 {
                     IERC20 token = IERC20(payTokenAddress);
-                    token.transferFrom(address(this), _msgSender(), profit);    
-                    token_withdraw.set(token_id, withdrawBeforeValue + profit);
+                    token.transferFrom(fundAddress, _msgSender(), amount);    
+                    token_income.set(token_id, incomeBeforeValue - amount);
+                    emit IncomeClaimed(sft_address, token_id, amount);
                 }
-
-                emit ProfitClaimed(_sft_address, token_id, profit);
             }
-        }   
+        // }   
     }
 
-    function _findLastOccurrence(uint256[] storage array, uint256 element) private view returns (bool, uint256) {
-        if (array.length == 0) {
-            return (false, 0);
-        }
+    // function _findLastOccurrence(uint256[] storage array, uint256 element) private view returns (bool, uint256) {
+    //     if (array.length == 0) {
+    //         return (false, 0);
+    //     }
 
-        uint256 low = 0;
-        uint256 high = array.length - 1; // Adjust high to be the last index
-        uint256 result = array.length; // Initialize result to an invalid index
+    //     uint256 low = 0;
+    //     uint256 high = array.length - 1; // Adjust high to be the last index
+    //     uint256 result = array.length; // Initialize result to an invalid index
 
-        while (low <= high) {
-            uint256 mid = Math.average(low, high);
+    //     while (low <= high) {
+    //         uint256 mid = Math.average(low, high);
 
-            if (array[mid] <= element) {
-                low = mid + 1; // Move right if the element is greater than or equal to the target
-                if (array[mid] == element) {
-                    result = mid; // Update result if current element is equal to the target
-                }
-            } else {
-                high = mid - 1; // Move left if the element is less than the target
-            }
-        }
+    //         if (array[mid] <= element) {
+    //             low = mid + 1; // Move right if the element is greater than or equal to the target
+    //             if (array[mid] == element) {
+    //                 result = mid; // Update result if current element is equal to the target
+    //             }
+    //         } else {
+    //             high = mid - 1; // Move left if the element is less than the target
+    //         }
+    //     }
 
-        // If result is not updated, it means the element is not found, return the largest index with value less than 'element'.
-        // Otherwise, return the last occurrence of the element.
-        if (result == array.length) {
-            return (false, high >= 0 ? high : 0); // Adjust for the case when all elements are greater than 'element'
-        }
-        return (false, result);
-    }
+    //     // If result is not updated, it means the element is not found, return the largest index with value less than 'element'.
+    //     // Otherwise, return the last occurrence of the element.
+    //     if (result == array.length) {
+    //         return (false, high >= 0 ? high : 0); // Adjust for the case when all elements are greater than 'element'
+    //     }
+    //     return (true, result);
+    // }
 
-    function calculateProfit(uint256 profit, uint256 shareBalance, uint256 slotAmount) private pure returns (uint256) {
+    function _calculate(uint256 profit, uint256 shareBalance, uint256 slotAmount) private pure returns (uint256) {
         if (slotAmount == 0 || profit ==0 || shareBalance == 0) {
             return 0;
         }
@@ -180,50 +208,46 @@ contract KnowledgeFi is Ownable, ReentrancyGuard {
         return shareSlot;
     }
 
-    function _profitAmount(address _sft_address, uint256 _token_id) public view returns (uint256) {
-
-        (bool has_lower, uint256 index) = _findLastOccurrence(sft_token_profit[_sft_address][_token_id].timestamp, block.timestamp - claimInterval);
-
-        if (has_lower) {
-            uint256 value = sft_token_profit[_sft_address][_token_id].values[index];
-            if (value>0) {
-                return value;
-            }
-        }   
+    function tokenIncome(address sft_address, uint256 token_id) public view returns (uint256) {
+        EnumerableMap.UintToUintMap storage token_income = sft_token_income[sft_address];    
+        (bool incomeIsExist, uint256 incomeBeforeValue) = token_income.tryGet(token_id);
+        if (incomeIsExist) {
+            return incomeBeforeValue;
+        }  
         return 0;
     }
 
-    function _lastSnapshotId(uint256[] storage ids) private view returns (uint256) {
-        if (ids.length == 0) {
-            return 0;
-        } else {
-            return ids[ids.length - 1];
-        }
-    }
+    // function _lastSnapshotId(uint256[] storage ids) private view returns (uint256) {
+    //     if (ids.length == 0) {
+    //         return 0;
+    //     } else {
+    //         return ids[ids.length - 1];
+    //     }
+    // }
 
-    function _updateProfitSnapshot(address _sft_address, uint256 _token_id, uint256 _profit) private {
-        if (_lastSnapshotId(sft_token_profit[_sft_address][_token_id].ids) < profitSnapshotId) {
-            sft_token_profit[_sft_address][_token_id].ids.push(profitSnapshotId);
-            sft_token_profit[_sft_address][_token_id].values.push(_profit);
-            sft_token_profit[_sft_address][_token_id].timestamp.push(block.timestamp);
-            emit ProfitSnapshotUpdated(_sft_address, _token_id, _profit);
-        }
-        profitSnapshotId++;
-    }
+    // function _updateProfitSnapshot(address _sft_address, uint256 _token_id, uint256 _profit) private {
+    //     profitSnapshotId++;
+    //     if (_lastSnapshotId(sft_token_profit[_sft_address][_token_id].ids) < profitSnapshotId) {
+    //         sft_token_profit[_sft_address][_token_id].ids.push(profitSnapshotId);
+    //         sft_token_profit[_sft_address][_token_id].values.push(_profit);
+    //         sft_token_profit[_sft_address][_token_id].timestamp.push(block.timestamp);
+    //         emit ProfitSnapshotUpdated(_sft_address, _token_id, _profit);
+    //     }
+    // }
 
-    function profitSnapshotOfAt(address _sft_address, uint256 _token_id, uint256 snapshot_id) public view returns (bool, uint256, uint256, uint256) {
-        require(_sft_address != address(0), "ReferenceID does not exist");
+    // function profitSnapshotOfAt(address _sft_address, uint256 _token_id, uint256 snapshot_id) public view returns (bool, uint256, uint256, uint256) {
+    //     require(_sft_address != address(0), "ReferenceID does not exist");
         
-        snapshots storage _snapshots = sft_token_profit[_sft_address][_token_id];
+    //     snapshots storage _snapshots = sft_token_profit[_sft_address][_token_id];
 
-        (bool has_lower, uint256 index) = _findLastOccurrence(_snapshots.ids, snapshot_id);
+    //     (bool has_lower, uint256 index) = _findLastOccurrence(_snapshots.ids, snapshot_id);
 
-        if (has_lower) {
-            return (true, index, _snapshots.values[index], _snapshots.timestamp[index]);
-        } else {
-            return (false, 0, 0, 0);
-        }
-    }
+    //     if (has_lower) {
+    //         return (true, index, _snapshots.values[index], _snapshots.timestamp[index]);
+    //     } else {
+    //         return (false, 0, 0, 0);
+    //     }
+    // }
 
     // helper function for finding the lower bound index of a value in an array
     // function _findLowerBound(uint256[] storage _array, uint256 _value) private view returns (bool, uint256) {
@@ -243,25 +267,30 @@ contract KnowledgeFi is Ownable, ReentrancyGuard {
         
     // }
 
-    function recharge(uint256 amount_) public {
+    function recharge(uint256 amount) public {
         IERC20 token = IERC20(payTokenAddress);
-        token.transferFrom(_msgSender(), address(this), amount_);
-        consumer_balance[_msgSender()] += amount_;
-        emit ConsumerBalanceRecharged(_msgSender(),amount_);
+        token.transferFrom(_msgSender(), fundAddress, amount);
+        consumer_balance[_msgSender()] += amount;
+        emit ConsumerBalanceRecharged(_msgSender(),amount);
     }
 
-    function setCommissionRate(uint256 _newrate) public onlyOwner {
-        commissionRate = _newrate;
-        emit CommissionRateChanged(_newrate);
+    function setFundAddress(address _address) public onlyOwner {
+        fundAddress = _address;
+        emit FundAddressChanged(_address);
     }
+
+    // function setCommissionRate(uint256 newrate) public onlyOwner {
+    //     commissionRate = newrate;
+    //     emit CommissionRateChanged(newrate);
+    // }
 
     function setPriceToken(address newtoken) public onlyOwner {
         payTokenAddress = newtoken;
         emit PayTokenChanged(newtoken);
     }
 
-    function setServiceProvider(address _address, bool _enabled) public onlyOwner {
-        service_provider[_address] = _enabled;
-        emit ServiceProviderChanged(_address, _enabled);
+    function setServiceProvider(address _address, bool enabled) public onlyOwner {
+        service_provider[_address] = enabled;
+        emit ServiceProviderChanged(_address, enabled);
     }
 }
