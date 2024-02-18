@@ -89,10 +89,14 @@ contract KnowledgeFi is Ownable, ReentrancyGuard {
         emit TokenCreated(address(sft_entry), slot_value, token_amount, assetId, token_owner, reference_id);
     }
 
-    function setSFTBaseURI(address sft_address, string memory new_uri) public onlyOwner {
+    function _setSFTBaseURI(address sft_address, string memory new_uri) internal {
         ISFT _sft = ISFT(sft_address);
         _sft.setBaseURI(new_uri);
         emit SFTBaseURIChanged(sft_address, new_uri);
+    }
+
+    function setSFTBaseURI(address sft_address, string memory new_uri) public onlyOwner {
+        _setSFTBaseURI(sft_address, new_uri);
     }
 
     function createInvoiceBatch(invoice[] memory _invoice) public {

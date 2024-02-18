@@ -975,11 +975,11 @@
 			]
 		},
 		"contracts/KnowledgeFi.sol": {
-			"keccak256": "0x95b6ba52426f9b7d8a5120bb65cdf46a0d782825db904aa02cacd61dc2e9286d",
+			"keccak256": "0xcec9300596c5d3a3acac7361e770330ecb70727d7532c92cd2623336a6cbdd1d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://06f35f1e7fc3bfe1859f29a9bfe3032e9763d0978dccb46cdae0ee9a2eaa6779",
-				"dweb:/ipfs/QmP4SyWd9fcQhBCmC94PaLYbzc1BMjvBzCjEBcBs98GQ74"
+				"bzz-raw://5e4e6231bdb2db03b50710efefb133014957c7ff39cc66366c5a061a5aa7619e",
+				"dweb:/ipfs/QmU1cGE2dK4UGh6RWyjJkbFPdPeE75QKQgc4ra3Gx1b6h9"
 			]
 		},
 		"contracts/SFT.sol": {
