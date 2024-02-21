@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@solvprotocol/erc-3525/ERC3525SlotApprovable.sol";
-import "./IKnowledgeFi.sol";
+// import "./IKnowledgeFi.sol";
 
 contract SFT is Context, ERC3525SlotApprovable, Ownable {
 
@@ -47,14 +47,14 @@ contract SFT is Context, ERC3525SlotApprovable, Ownable {
     //     return Kip._profitAmount(address(this));
     // }
 
-    function tokenIncome(uint256 token_id) public view returns (uint256) {
-        IKnowledgeFi Kip = IKnowledgeFi(owner());
-        uint256 shareSlot = Kip._shareSlot();
-        if(slotOf(token_id) != shareSlot) {
-            revert("No match share slot"); 
-        }
-        return Kip.tokenIncome(address(this), token_id);
-    }
+    // function tokenIncome(uint256 token_id) public view returns (uint256) {
+    //     IKnowledgeFi Kip = IKnowledgeFi(owner());
+    //     uint256 shareSlot = Kip._shareSlot();
+    //     if(slotOf(token_id) != shareSlot) {
+    //         revert("No match share slot"); 
+    //     }
+    //     return Kip.tokenIncome(address(this), token_id);
+    // }
 
     function slotAmount(uint256 sft_slot) public view returns (uint256) {
         uint256 slot_amount = 0;

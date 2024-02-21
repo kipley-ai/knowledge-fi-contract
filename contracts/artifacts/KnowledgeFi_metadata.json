@@ -760,7 +760,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/KnowledgeFi.sol": "KnowledgeFi"
+			"contracts/SFTFactory.sol": "KnowledgeFi"
 		},
 		"evmVersion": "shanghai",
 		"libraries": {},
@@ -769,7 +769,7 @@
 		},
 		"optimizer": {
 			"enabled": true,
-			"runs": 200
+			"runs": 100
 		},
 		"remappings": []
 	},
@@ -974,20 +974,20 @@
 				"dweb:/ipfs/QmVUR8q316gbZzZCU6ek5qrn6A28RXhz53q1qfbL4fH9f4"
 			]
 		},
-		"contracts/KnowledgeFi.sol": {
-			"keccak256": "0xcec9300596c5d3a3acac7361e770330ecb70727d7532c92cd2623336a6cbdd1d",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://5e4e6231bdb2db03b50710efefb133014957c7ff39cc66366c5a061a5aa7619e",
-				"dweb:/ipfs/QmU1cGE2dK4UGh6RWyjJkbFPdPeE75QKQgc4ra3Gx1b6h9"
-			]
-		},
 		"contracts/SFT.sol": {
 			"keccak256": "0xd2483a14f2136a106a927398f62fd7f0ce579b6770bd346e8805a9c656d561c9",
 			"license": "MIT",
 			"urls": [
 				"bzz-raw://5a7cf23650389a4f88b4d589cb2f152cc480db226c734919694785c612a6419b",
 				"dweb:/ipfs/QmcN21XSkuM4h8YBCWPdMCPsJPdE7oEYo4HuVPmgPsAr6g"
+			]
+		},
+		"contracts/SFTFactory.sol": {
+			"keccak256": "0xa7f893eedd11ef8ff621c166d805e3982cfb21ada78cff931d0acd060c053a02",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0e165b325947e94090d5b0aed266c27daf3a1500ce1fdfb321cd7033f04ed256",
+				"dweb:/ipfs/QmZ5HcRueHk1x9RScoReyXZdnh266iRP63jxJdLVGHkhav"
 			]
 		}
 	},

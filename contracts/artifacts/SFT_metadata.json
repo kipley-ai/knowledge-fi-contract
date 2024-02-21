@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.24+commit.e11b9ed9"
+		"version": "0.8.20+commit.a1b79de6"
 	},
 	"language": "Solidity",
 	"output": {
@@ -861,25 +861,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "token_id",
-						"type": "uint256"
-					}
-				],
-				"name": "tokenIncome",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "address",
 						"name": "owner_",
 						"type": "address"
@@ -1185,7 +1166,7 @@
 		},
 		"optimizer": {
 			"enabled": true,
-			"runs": 200
+			"runs": 100
 		},
 		"remappings": []
 	},
@@ -1342,20 +1323,12 @@
 				"dweb:/ipfs/QmZBr8aqYyyErUqHdGDhyZXyj4RUk2G1fsLfRtwdEC1Wf3"
 			]
 		},
-		"contracts/IKnowledgeFi.sol": {
-			"keccak256": "0xbeb39a2eadcd96121504c84789ce41ce9e34b6821f56afd847717c13fa442fb6",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://7c66b0cb73ad39a8288d83efcfac8adfea0e305334b6dfe62862e9fc8b098be7",
-				"dweb:/ipfs/QmTE4RRSFT1Tq4oHKbzC1433SN8AcsB8ArN4fw24wLwx3N"
-			]
-		},
 		"contracts/SFT.sol": {
-			"keccak256": "0xd2483a14f2136a106a927398f62fd7f0ce579b6770bd346e8805a9c656d561c9",
+			"keccak256": "0x412ed17c76050f5c70ac87d1379ce6f9372238c66d70e3c98e0bf43930fc7e4f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5a7cf23650389a4f88b4d589cb2f152cc480db226c734919694785c612a6419b",
-				"dweb:/ipfs/QmcN21XSkuM4h8YBCWPdMCPsJPdE7oEYo4HuVPmgPsAr6g"
+				"bzz-raw://5f2c527db4a9ab3ff6e0fa031f15f0859794aff37dab0096daba35304f1c039b",
+				"dweb:/ipfs/QmVprzeswr4dvCQjQp618BoxW2zqY1CgmTQogiNweBhCVc"
 			]
 		}
 	},

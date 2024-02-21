@@ -1,0 +1,600 @@
+{
+	"compiler": {
+		"version": "0.8.20+commit.a1b79de6"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "initialOwner",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "sft_base_uri",
+						"type": "string"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					}
+				],
+				"name": "OwnableInvalidOwner",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "OwnableUnauthorizedAccount",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "ReentrancyGuardReentrantCall",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "length",
+						"type": "uint256"
+					}
+				],
+				"name": "StringsInsufficientHexLength",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "sft_address",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "new_uri",
+						"type": "string"
+					}
+				],
+				"name": "SFTBaseURIChanged",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "provider_address",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bool",
+						"name": "enabled",
+						"type": "bool"
+					}
+				],
+				"name": "SFTMinterChanged",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "sft_address",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "slot_value",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "token_amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "asset_id",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "owner_address",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "reference_id",
+						"type": "string"
+					}
+				],
+				"name": "TokenCreated",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "SFTBaseURI",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "_shareSlot",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_symbol",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "slot_value",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "token_amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "token_owner",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "reference_id",
+						"type": "string"
+					}
+				],
+				"name": "createSFT",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "sft_address",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "new_uri",
+						"type": "string"
+					}
+				],
+				"name": "setSFTBaseURI",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "enabled",
+						"type": "bool"
+					}
+				],
+				"name": "setSFTMinter",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "sft_minter",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "shareSlot",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"errors": {
+				"OwnableInvalidOwner(address)": [
+					{
+						"details": "The owner is not a valid owner account. (eg. `address(0)`)"
+					}
+				],
+				"OwnableUnauthorizedAccount(address)": [
+					{
+						"details": "The caller account is not authorized to perform an operation."
+					}
+				],
+				"ReentrancyGuardReentrantCall()": [
+					{
+						"details": "Unauthorized reentrant call."
+					}
+				],
+				"StringsInsufficientHexLength(uint256,uint256)": [
+					{
+						"details": "The `value` string doesn't fit in the specified `length`."
+					}
+				]
+			},
+			"kind": "dev",
+			"methods": {
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/SFTFactory.sol": "SFTFactory"
+		},
+		"evmVersion": "shanghai",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 100
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts/access/Ownable.sol": {
+			"keccak256": "0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8ed324d3920bb545059d66ab97d43e43ee85fd3bd52e03e401f020afb0b120f6",
+				"dweb:/ipfs/QmfEckWLmZkDDcoWrkEvMWhms66xwTLff9DDhegYpvHo1a"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0xc6a8ff0ea489379b61faa647490411b80102578440ab9d84e9a957cc12164e70",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0ea104e577e63faea3b69c415637e99e755dcbf64c5833d7140c35a714d6d90c",
+				"dweb:/ipfs/Qmau6x4Ns9XdyynRCNNp3RhLqijJjFm7z5fyZazfYFGYdq"
+			]
+		},
+		"@openzeppelin/contracts/utils/Context.sol": {
+			"keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12",
+				"dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF"
+			]
+		},
+		"@openzeppelin/contracts/utils/ReentrancyGuard.sol": {
+			"keccak256": "0xf980daa263b661ab8ddee7d4fd833c7da7e7995e2c359ff1f17e67e4112f2236",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7448ab095d6940130bcf76ba47a2eab14148c83119523b93dd89f6d84edd6c02",
+				"dweb:/ipfs/QmawrZ4voKQjH3oomXT3Kuheb3Mnmo2VvVpxg8Ne5UJUrd"
+			]
+		},
+		"@openzeppelin/contracts/utils/Strings.sol": {
+			"keccak256": "0x55f102ea785d8399c0e58d1108e2d289506dde18abc6db1b7f68c1f9f9bc5792",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6e52e0a7765c943ef14e5bcf11e46e6139fa044be564881378349236bf2e3453",
+				"dweb:/ipfs/QmZEeeXoFPW47amyP35gfzomF9DixqqTEPwzBakv6cZw6i"
+			]
+		},
+		"@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+			"keccak256": "0x4296879f55019b23e135000eb36896057e7101fb7fb859c5ef690cf14643757b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://87b3541437c8c443ccd36795e56a338ed12855eec17f8da624511b8d1a7e14df",
+				"dweb:/ipfs/QmeJQCtZrQjtJLr6u7ZHWeH3pBnjtLWzvRrKViAi7UZqxL"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/Math.sol": {
+			"keccak256": "0x005ec64c6313f0555d59e278f9a7a5ab2db5bdc72a027f255a37c327af1ec02d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://4ece9f0b9c8daca08c76b6b5405a6446b6f73b3a15fab7ff56e296cbd4a2c875",
+				"dweb:/ipfs/QmQyRpyPRL5SQuAgj6SHmbir3foX65FJjbVTTQrA2EFg6L"
+			]
+		},
+		"@openzeppelin/contracts/utils/math/SignedMath.sol": {
+			"keccak256": "0x5f7e4076e175393767754387c962926577f1660dd9b810187b9002407656be72",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7d533a1c97cd43a57cd9c465f7ee8dd0e39ae93a8fb8ff8e5303a356b081cdcc",
+				"dweb:/ipfs/QmVBEei6aTnvYNZp2CHYVNKyZS4q1KkjANfY39WVXZXVoT"
+			]
+		},
+		"@solvprotocol/erc-3525/ERC3525.sol": {
+			"keccak256": "0xdb06f2cb8c31b341fe867e41978007c2afb51ef58dab1d790a502ee3b527bdeb",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7dff0a3cea5381e74a94250289fa3a0c1785d791315107e9ec2008bfbffba122",
+				"dweb:/ipfs/QmRH7xSBT5SxzdBCv6u35vN99L1uSch4WP6ju6SNubKjxq"
+			]
+		},
+		"@solvprotocol/erc-3525/ERC3525SlotApprovable.sol": {
+			"keccak256": "0x8618cf9ccf9fad16d5798ef6e6403cc2f67b8ef947c8cb03aa40d295502c7744",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://777523f1e07f46beedd110fc8f2e88eaa22e48bd51a1577bf092c77da0c87d84",
+				"dweb:/ipfs/QmSTyrxGPL226PxnqXGUhqKT7SRprWDF17pVP8w8yPa98t"
+			]
+		},
+		"@solvprotocol/erc-3525/ERC3525SlotEnumerable.sol": {
+			"keccak256": "0x7552d289d5a59b6e9250bcd0a0036d5fe1c949bb6259874677cb91dbdf9f3102",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://61cdef208c82d4d39b3b81b557fb7c3b8e484610f376c8ff7cffa5ea86a672e8",
+				"dweb:/ipfs/QmSw9SRe1RDtLUaKiAct9ADQf27e5Gvk6D88ufc64RjpnH"
+			]
+		},
+		"@solvprotocol/erc-3525/IERC3525.sol": {
+			"keccak256": "0x901207b3c61837eeae24c25271533a0dd684745dad978235053fe4d9d86a9ded",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e4a72b6cd12e5f8eb092a358a919eeb62fd685ecdc9a8ebc6e222845ec6bfbe6",
+				"dweb:/ipfs/QmeFMHVXcMzZ7PBY13m9wPfeuYqah7wyscKfyR4C7MogDZ"
+			]
+		},
+		"@solvprotocol/erc-3525/IERC3525Receiver.sol": {
+			"keccak256": "0x786383869053c8390f7d8425750c9d1d2f96ab524374f56b986414271e8b1c9d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8b2fb8260880b4bfd92733e5ae68393f9ca283683e6ae1cb67d5df750ec8e626",
+				"dweb:/ipfs/QmeSokK66DCLeonJbz9qKGRrfS9pAje8VqDJRkoCfGN28M"
+			]
+		},
+		"@solvprotocol/erc-3525/IERC721.sol": {
+			"keccak256": "0x3553276ca123c09e0ebc3232afb0452dff1d2841e767e221deffe0633867f5e8",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7bed27e2b7297a37d632fe2088796626181824c9148b2893a30b447d87dd7312",
+				"dweb:/ipfs/QmUbLTwJDzopZam1TVqkcWEd4nXmVkwrH2Yb6VTFT4DcTe"
+			]
+		},
+		"@solvprotocol/erc-3525/IERC721Receiver.sol": {
+			"keccak256": "0x1b5f60bb2c8e2915ba219bd9916af6328ae8da2ca2daa7e5a6fc674277fb8ab1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://3e57afce81697d811c0c81ecaba51c164b6da1fffad3d433cc9e98c5ac8e9b25",
+				"dweb:/ipfs/QmXbTFQ9WVnaxuER54djUyia4pHgw637FJKBh1xKQgRwgi"
+			]
+		},
+		"@solvprotocol/erc-3525/extensions/IERC3525Metadata.sol": {
+			"keccak256": "0x73d0c053478063ca4345ccc32e0e069ed14636e8f7dcffd27a3a5d16e5df1015",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e926678863bc58d9267d79687e8d090ecebd348cd313237654f75fead1a6db65",
+				"dweb:/ipfs/QmWnxuw7iq8ikw4uBsKXszpnXcFTSr11DhTRg7MpFrdBB2"
+			]
+		},
+		"@solvprotocol/erc-3525/extensions/IERC3525SlotApprovable.sol": {
+			"keccak256": "0xbe5baf681bb5a93e20573b01d22559f3822d7e97cc8f028d03f378e570fac47f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://746f96cd24d2686b78a481835fbb24707dca2987a2f3d4cd2e8d044f5a73dcc0",
+				"dweb:/ipfs/QmPHozfJQ7cLf2JQbLMF7M4mC6sB4JRRMB4nmxEWfbgPsg"
+			]
+		},
+		"@solvprotocol/erc-3525/extensions/IERC3525SlotEnumerable.sol": {
+			"keccak256": "0x27afa03aa1c72fd7910701353d1cae009af79ddc83b44b91bfb59001c12fbe9e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b78135515798c96684c849c4c69bf53adec444495279570506492481f532d591",
+				"dweb:/ipfs/QmZVvBidwMjWwCF1iUxCmH3zMbeh5SNyCMztv77mZwGoWt"
+			]
+		},
+		"@solvprotocol/erc-3525/extensions/IERC721Enumerable.sol": {
+			"keccak256": "0x872552c912722ad746f43b91583b921b97943aeaddba573ee6f14ef1eec9e03d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://fffddbfa9c3c863a313a2036f44148200a5e87f8f51dbddee8578fac889c828f",
+				"dweb:/ipfs/QmXfhoS6qzqWpWRGoTc2tdCf88MnGX5eCt4nfV2qun7BEY"
+			]
+		},
+		"@solvprotocol/erc-3525/extensions/IERC721Metadata.sol": {
+			"keccak256": "0xb3e7cb4572ee9649f15fd17dc3865c8a4a47f92679233cc68e578c36f45ac5e1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b3141ce4e2518b3060e258e6db17d45521fc135776674498bc75b269fc997b82",
+				"dweb:/ipfs/QmTDjiZMXXFtLjn5RLy1abU4ugMDkEC7uzdejDjgGBMHV6"
+			]
+		},
+		"@solvprotocol/erc-3525/periphery/interface/IERC3525MetadataDescriptor.sol": {
+			"keccak256": "0xc297d848cece83ff6d6d67e6f884667425445776b3b5c8fd185c4a01a2f79de7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a498945e761792cbf32be30eb8f512b214260a55b56e325c2611e8caa23978bf",
+				"dweb:/ipfs/QmZBr8aqYyyErUqHdGDhyZXyj4RUk2G1fsLfRtwdEC1Wf3"
+			]
+		},
+		"contracts/IKnowledgeFi.sol": {
+			"keccak256": "0xbeb39a2eadcd96121504c84789ce41ce9e34b6821f56afd847717c13fa442fb6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7c66b0cb73ad39a8288d83efcfac8adfea0e305334b6dfe62862e9fc8b098be7",
+				"dweb:/ipfs/QmTE4RRSFT1Tq4oHKbzC1433SN8AcsB8ArN4fw24wLwx3N"
+			]
+		},
+		"contracts/ISFT.sol": {
+			"keccak256": "0x276fafcf41c6232ad371ee4fe1bce8d71ac34ca7e6430e84950189a6598590ee",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://67069f3651f67851edb9669875bced76dce84b262007de9194a8db06511278ce",
+				"dweb:/ipfs/QmVUR8q316gbZzZCU6ek5qrn6A28RXhz53q1qfbL4fH9f4"
+			]
+		},
+		"contracts/SFT.sol": {
+			"keccak256": "0xd2483a14f2136a106a927398f62fd7f0ce579b6770bd346e8805a9c656d561c9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5a7cf23650389a4f88b4d589cb2f152cc480db226c734919694785c612a6419b",
+				"dweb:/ipfs/QmcN21XSkuM4h8YBCWPdMCPsJPdE7oEYo4HuVPmgPsAr6g"
+			]
+		},
+		"contracts/SFTFactory.sol": {
+			"keccak256": "0xb35c3789c2f4defc9479a6b5c8839917ff001450ca244cf0622564c2b095dc34",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8bf0ea131123c45230aa8d28539414359932e424866bca7786530e5f68657376",
+				"dweb:/ipfs/QmU7YiCpN8Pte8eP2KLxXNP49LH7E3uEBD8pEGb8vuCzur"
+			]
+		}
+	},
+	"version": 1
+}
