@@ -2,36 +2,44 @@
 
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/utils/Context.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@solvprotocol/erc-3525/ERC3525SlotApprovable.sol";
-import "./IKnowledgeFi.sol";
+// the list of libraries that we will use to upgrade the smart contracts
+import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@solvprotocol/erc-3525/ERC3525SlotApprovableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
+import "@solvprotocol/erc-3525/ERC3525Upgradeable.sol";
+//import "@solvprotocol/erc-3525/IERC3525Upgradeable.sol";
 
-contract SFT is Context, ERC3525SlotApprovable, Ownable {
+import "./IKnowledgeFi.sol";
+// add inheritence
+contract SFT is Initializable, ContextUpgradeable, ERC3525SlotApprovableUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
 
     string public baseURI;
 
-    constructor(
+    // Initializer instead of the constructor
+    function initialize(
         address owner_,
         string memory name_,
         string memory symbol_
-    ) ERC3525SlotApprovable(name_, symbol_, 18)
-      Ownable(owner_) {
+    ) public initializer {
+        __ERC3525SlotApprovable_init(name_, symbol_, 18);
+        __Ownable_init(owner_);
     }
-
+// from ERC3525 to ERC3525Upgradeable
     function mint(
         address mintTo_,
         uint256 slot_,
         uint256 value_
     ) public onlyOwner {
-        ERC3525._mint(mintTo_, slot_, value_);
+        ERC3525Upgradeable._mint(mintTo_, slot_, value_);
     }
-
+// from ERC3525 to ERC3525Upgradeable
     function mintValue(
         uint256 tokenId_,
         uint256 value_
     ) public onlyOwner {
-        ERC3525._mintValue(tokenId_, value_);
+        ERC3525Upgradeable._mintValue(tokenId_, value_);
     }
 
     function _baseURI() internal override view returns (string memory) {
@@ -66,7 +74,7 @@ contract SFT is Context, ERC3525SlotApprovable, Ownable {
         return slot_amount;
     }
 
-// override
+// override I didn`t change these 2 functions as they are under comments (they are not upgradable)
     // function transferFrom(
     //     uint256 fromTokenId_,
     //     address to_,
@@ -82,4 +90,5 @@ contract SFT is Context, ERC3525SlotApprovable, Ownable {
     // ) public payable virtual override(ERC3525, IERC3525) {
     //     super.transferFrom(fromTokenId_, toTokenId_, value_);
     // }
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 }
