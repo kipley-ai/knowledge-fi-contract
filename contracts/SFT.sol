@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@solvprotocol/erc-3525/ERC3525SlotApprovable.sol";
-import "./IKipProtocol.sol";
+import "./IKnowledgeFi.sol";
 
 contract SFT is Context, ERC3525SlotApprovable, Ownable {
 
@@ -42,21 +42,21 @@ contract SFT is Context, ERC3525SlotApprovable, Ownable {
         baseURI = newuri;
     }
 
-    function _profitEstimate() public view returns (uint256) {
-        IKipProtocol Kip = IKipProtocol(owner());
-        return Kip._profitAmount(address(this));
-    }
+    // function _profitEstimate() public view returns (uint256) {
+    //     IKipProtocol Kip = IKipProtocol(owner());
+    //     return Kip._profitAmount(address(this));
+    // }
 
-    function _tokenProfitEstimate(uint256 token_id) public view returns (uint256) {
-        IKipProtocol Kip = IKipProtocol(owner());
+    function tokenIncome(uint256 token_id) public view returns (uint256) {
+        IKnowledgeFi Kip = IKnowledgeFi(owner());
         uint256 shareSlot = Kip._shareSlot();
         if(slotOf(token_id) != shareSlot) {
             revert("No match share slot"); 
         }
-        return (Kip._profitAmount(address(this))*(balanceOf(token_id)/_slotAmount(token_id)));
+        return Kip.tokenIncome(address(this), token_id);
     }
 
-    function _slotAmount(uint256 sft_slot) public view returns (uint256) {
+    function slotAmount(uint256 sft_slot) public view returns (uint256) {
         uint256 slot_amount = 0;
         for (uint256 j = 0; j < tokenSupplyInSlot(sft_slot); j++) {
             uint256 _sft_token_id = tokenInSlotByIndex(sft_slot,j);
@@ -67,19 +67,19 @@ contract SFT is Context, ERC3525SlotApprovable, Ownable {
     }
 
 // override
-    function transferFrom(
-        uint256 fromTokenId_,
-        address to_,
-        uint256 value_
-    ) public payable virtual override(ERC3525, IERC3525) returns (uint256 newTokenId) {
-        return super.transferFrom(fromTokenId_, to_, value_);
-    }
+    // function transferFrom(
+    //     uint256 fromTokenId_,
+    //     address to_,
+    //     uint256 value_
+    // ) public payable virtual override(ERC3525, IERC3525) returns (uint256 newTokenId) {
+    //     return super.transferFrom(fromTokenId_, to_, value_);
+    // }
 
-    function transferFrom(
-        uint256 fromTokenId_,
-        uint256 toTokenId_,
-        uint256 value_
-    ) public payable virtual override(ERC3525, IERC3525) {
-        super.transferFrom(fromTokenId_, toTokenId_, value_);
-    }
+    // function transferFrom(
+    //     uint256 fromTokenId_,
+    //     uint256 toTokenId_,
+    //     uint256 value_
+    // ) public payable virtual override(ERC3525, IERC3525) {
+    //     super.transferFrom(fromTokenId_, toTokenId_, value_);
+    // }
 }

@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.22+commit.4fc1097e"
+		"version": "0.8.20+commit.a1b79de6"
 	},
 	"language": "Solidity",
 	"output": {
@@ -516,6 +516,38 @@
 			{
 				"inputs": [
 					{
+						"internalType": "string",
+						"name": "newuri",
+						"type": "string"
+					}
+				],
+				"name": "setBaseURI",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "sft_slot",
+						"type": "uint256"
+					}
+				],
+				"name": "slotAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint256",
 						"name": "_index",
 						"type": "uint256"
@@ -616,6 +648,25 @@
 					}
 				],
 				"name": "tokenInSlotByIndex",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "token_id",
+						"type": "uint256"
+					}
+				],
+				"name": "tokenIncome",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -1176,11 +1227,11 @@
 			]
 		},
 		"contracts/ISFT.sol": {
-			"keccak256": "0x3286449e804d00df9d8b926d70c4b15dce6779ffca913e10d45de7c2b3ebd2dc",
+			"keccak256": "0x276fafcf41c6232ad371ee4fe1bce8d71ac34ca7e6430e84950189a6598590ee",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://f211bd24cd0dba473be7fada1d51b460c4a10806fc6d30de8fb66db101441047",
-				"dweb:/ipfs/Qmby7WuhQjXpVo59Q33uBeSeFBugVGhHiJ2h2JWAssdnuV"
+				"bzz-raw://67069f3651f67851edb9669875bced76dce84b262007de9194a8db06511278ce",
+				"dweb:/ipfs/QmVUR8q316gbZzZCU6ek5qrn6A28RXhz53q1qfbL4fH9f4"
 			]
 		}
 	},

@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.22+commit.4fc1097e"
+		"version": "0.8.24+commit.e11b9ed9"
 	},
 	"language": "Solidity",
 	"output": {
@@ -698,6 +698,25 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
+						"name": "sft_slot",
+						"type": "uint256"
+					}
+				],
+				"name": "slotAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
 						"name": "index_",
 						"type": "uint256"
 					}
@@ -829,6 +848,25 @@
 					}
 				],
 				"name": "tokenInSlotByIndex",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "token_id",
+						"type": "uint256"
+					}
+				],
+				"name": "tokenIncome",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -1304,12 +1342,20 @@
 				"dweb:/ipfs/QmZBr8aqYyyErUqHdGDhyZXyj4RUk2G1fsLfRtwdEC1Wf3"
 			]
 		},
-		"contracts/SFT.sol": {
-			"keccak256": "0xa39c2135ffc59ec9dc4cdf748cbb1d8964ea32709179267926d3fd3a2e38a062",
+		"contracts/IKnowledgeFi.sol": {
+			"keccak256": "0xbeb39a2eadcd96121504c84789ce41ce9e34b6821f56afd847717c13fa442fb6",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://6b9d638ccb3d646c1e0cc007d525ca72563ff20f5223e569e2d4e3663b4bd063",
-				"dweb:/ipfs/QmaNrDFtUdCGMLPYb5GGteExN441QqYbiMiAYdrqoQetEa"
+				"bzz-raw://7c66b0cb73ad39a8288d83efcfac8adfea0e305334b6dfe62862e9fc8b098be7",
+				"dweb:/ipfs/QmTE4RRSFT1Tq4oHKbzC1433SN8AcsB8ArN4fw24wLwx3N"
+			]
+		},
+		"contracts/SFT.sol": {
+			"keccak256": "0xd2483a14f2136a106a927398f62fd7f0ce579b6770bd346e8805a9c656d561c9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5a7cf23650389a4f88b4d589cb2f152cc480db226c734919694785c612a6419b",
+				"dweb:/ipfs/QmcN21XSkuM4h8YBCWPdMCPsJPdE7oEYo4HuVPmgPsAr6g"
 			]
 		}
 	},

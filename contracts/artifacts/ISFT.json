@@ -64,12 +64,15 @@
 			"safeTransferFrom(address,address,uint256,bytes)": "b88d4fde",
 			"setApprovalForAll(address,bool)": "a22cb465",
 			"setApprovalForSlot(address,uint256,address,bool)": "55cd4e06",
+			"setBaseURI(string)": "55f804b3",
+			"slotAmount(uint256)": "5a3c7da7",
 			"slotByIndex(uint256)": "993bef8d",
 			"slotCount()": "ed08fa80",
 			"slotOf(uint256)": "263f3e7e",
 			"supportsInterface(bytes4)": "01ffc9a7",
 			"tokenByIndex(uint256)": "4f6ccce7",
 			"tokenInSlotByIndex(uint256,uint256)": "00cd0110",
+			"tokenIncome(uint256)": "f0db6753",
 			"tokenOfOwnerByIndex(address,uint256)": "2f745c59",
 			"tokenSupplyInSlot(uint256)": "4f8a0f83",
 			"totalSupply()": "18160ddd",
@@ -591,6 +594,38 @@
 		{
 			"inputs": [
 				{
+					"internalType": "string",
+					"name": "newuri",
+					"type": "string"
+				}
+			],
+			"name": "setBaseURI",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "sft_slot",
+					"type": "uint256"
+				}
+			],
+			"name": "slotAmount",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
 					"internalType": "uint256",
 					"name": "_index",
 					"type": "uint256"
@@ -691,6 +726,25 @@
 				}
 			],
 			"name": "tokenInSlotByIndex",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "token_id",
+					"type": "uint256"
+				}
+			],
+			"name": "tokenIncome",
 			"outputs": [
 				{
 					"internalType": "uint256",
