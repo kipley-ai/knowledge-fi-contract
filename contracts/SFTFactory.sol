@@ -40,21 +40,21 @@ contract SFTFactory is Ownable, ReentrancyGuard {
         for (uint256 i = 1; i <= token_amount; i++) {
             sft_entry.mint(token_owner, share_slot, slot_value);
         }
-        setSFTBaseURI(address(sft_entry),string.concat(SFTBaseURI,Strings.toHexString(address(sft_entry)),'/'));
+        sft_entry.setBaseURI(string.concat(SFTBaseURI,Strings.toHexString(address(sft_entry)),'/'));
         // sft_assets[assetId] = address(sft_entry);
         emit TokenCreated(address(sft_entry), share_slot, slot_value, token_amount, 0, token_owner, reference_id);
         return address(sft_entry);
     }
 
-    function _setSFTBaseURI(address sft_address, string memory new_uri) internal {
+    function setSFTBaseURI(address sft_address, string memory new_uri) public onlyOwner {
         ISFT _sft = ISFT(sft_address);
         _sft.setBaseURI(new_uri);
         emit SFTBaseURIChanged(sft_address, new_uri);
     }
 
-    function setSFTBaseURI(address sft_address, string memory new_uri) public onlyOwner {
-        _setSFTBaseURI(sft_address, new_uri);
-    }
+    // function setSFTBaseURI(address sft_address, string memory new_uri) public onlyOwner {
+    //     _setSFTBaseURI(sft_address, new_uri);
+    // }
 
     // function _shareSlot() public view returns (uint256) {
     //     return shareSlot;
