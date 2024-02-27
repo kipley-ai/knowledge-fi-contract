@@ -135,7 +135,7 @@ contract KnowledgeFi is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
             if(incomeBeforeValue >= amount)
             {
                 IERC20 token = IERC20(payTokenAddress);
-                token.transferFrom(fundAddress, _msgSender(), amount);    
+                token.transfer(_msgSender(), amount);    
                 token_income.set(token_id, incomeBeforeValue - amount);
                 emit IncomeClaimed(sft_address, token_id, amount);
             }
@@ -166,7 +166,7 @@ contract KnowledgeFi is Initializable, UUPSUpgradeable, OwnableUpgradeable, Reen
 
     function recharge(uint256 amount) public {
         IERC20 token = IERC20(payTokenAddress);
-        token.transferFrom(_msgSender(), fundAddress, amount);
+        token.transferFrom(_msgSender(), address(this), amount);
         consumer_balance[_msgSender()] += amount;
         emit ConsumerBalanceRecharged(_msgSender(),amount);
     }

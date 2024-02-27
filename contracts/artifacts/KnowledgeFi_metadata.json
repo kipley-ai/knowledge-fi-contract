@@ -1,39 +1,60 @@
 {
 	"compiler": {
-		"version": "0.8.20+commit.a1b79de6"
+		"version": "0.8.24+commit.e11b9ed9"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "initialOwner",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "pay_token",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "fund_address",
-						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "sft_base_uri",
-						"type": "string"
-					}
-				],
+				"inputs": [],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "target",
+						"type": "address"
+					}
+				],
+				"name": "AddressEmptyCode",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "implementation",
+						"type": "address"
+					}
+				],
+				"name": "ERC1967InvalidImplementation",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "ERC1967NonPayable",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "FailedInnerCall",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidInitialization",
+				"type": "error"
+			},
+			{
 				"inputs": [],
 				"name": "MathOverflowedMulDiv",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "NotInitializing",
 				"type": "error"
 			},
 			{
@@ -64,19 +85,19 @@
 				"type": "error"
 			},
 			{
+				"inputs": [],
+				"name": "UUPSUnauthorizedCallContext",
+				"type": "error"
+			},
+			{
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "value",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "length",
-						"type": "uint256"
+						"internalType": "bytes32",
+						"name": "slot",
+						"type": "bytes32"
 					}
 				],
-				"name": "StringsInsufficientHexLength",
+				"name": "UUPSUnsupportedProxiableUUID",
 				"type": "error"
 			},
 			{
@@ -134,6 +155,19 @@
 					}
 				],
 				"name": "IncomeClaimed",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint64",
+						"name": "version",
+						"type": "uint64"
+					}
+				],
+				"name": "Initialized",
 				"type": "event"
 			},
 			{
@@ -211,17 +245,11 @@
 					{
 						"indexed": false,
 						"internalType": "address",
-						"name": "sft_address",
+						"name": "token_address",
 						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "new_uri",
-						"type": "string"
 					}
 				],
-				"name": "SFTBaseURIChanged",
+				"name": "SFTFactoryAddressChanged",
 				"type": "event"
 			},
 			{
@@ -247,48 +275,18 @@
 				"anonymous": false,
 				"inputs": [
 					{
-						"indexed": false,
+						"indexed": true,
 						"internalType": "address",
-						"name": "sft_address",
+						"name": "implementation",
 						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "slot_value",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "token_amount",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "asset_id",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "owner_address",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "reference_id",
-						"type": "string"
 					}
 				],
-				"name": "TokenCreated",
+				"name": "Upgraded",
 				"type": "event"
 			},
 			{
 				"inputs": [],
-				"name": "SFTBaseURI",
+				"name": "UPGRADE_INTERFACE_VERSION",
 				"outputs": [
 					{
 						"internalType": "string",
@@ -482,6 +480,34 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "initial_owner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "pay_token",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "fund_address",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "sft_factory_address",
+						"type": "address"
+					}
+				],
+				"name": "initialize",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "invoiceId",
 				"outputs": [
@@ -515,6 +541,19 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "proxiableUUID",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
 					}
 				],
 				"stateMutability": "view",
@@ -589,16 +628,11 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "sft_address",
+						"name": "_address",
 						"type": "address"
-					},
-					{
-						"internalType": "string",
-						"name": "new_uri",
-						"type": "string"
 					}
 				],
-				"name": "setSFTBaseURI",
+				"name": "setSFTFactoryAddress",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -619,6 +653,19 @@
 				"name": "setServiceProvider",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "sftFactoryAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -708,13 +755,61 @@
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newImplementation",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "data",
+						"type": "bytes"
+					}
+				],
+				"name": "upgradeToAndCall",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
 			}
 		],
 		"devdoc": {
 			"errors": {
+				"AddressEmptyCode(address)": [
+					{
+						"details": "There's no code at `target` (it is not a contract)."
+					}
+				],
+				"ERC1967InvalidImplementation(address)": [
+					{
+						"details": "The `implementation` of the proxy is invalid."
+					}
+				],
+				"ERC1967NonPayable()": [
+					{
+						"details": "An upgrade function sees `msg.value > 0` that may be lost."
+					}
+				],
+				"FailedInnerCall()": [
+					{
+						"details": "A call to an address target failed. The target may have reverted."
+					}
+				],
+				"InvalidInitialization()": [
+					{
+						"details": "The contract is already initialized."
+					}
+				],
 				"MathOverflowedMulDiv()": [
 					{
 						"details": "Muldiv operation overflow."
+					}
+				],
+				"NotInitializing()": [
+					{
+						"details": "The contract is not initializing."
 					}
 				],
 				"OwnableInvalidOwner(address)": [
@@ -732,22 +827,42 @@
 						"details": "Unauthorized reentrant call."
 					}
 				],
-				"StringsInsufficientHexLength(uint256,uint256)": [
+				"UUPSUnauthorizedCallContext()": [
 					{
-						"details": "The `value` string doesn't fit in the specified `length`."
+						"details": "The call is from an unauthorized context."
+					}
+				],
+				"UUPSUnsupportedProxiableUUID(bytes32)": [
+					{
+						"details": "The storage `slot` is unsupported as a UUID."
 					}
 				]
+			},
+			"events": {
+				"Initialized(uint64)": {
+					"details": "Triggered when the contract has been initialized or reinitialized."
+				},
+				"Upgraded(address)": {
+					"details": "Emitted when the implementation is upgraded."
+				}
 			},
 			"kind": "dev",
 			"methods": {
 				"owner()": {
 					"details": "Returns the address of the current owner."
 				},
+				"proxiableUUID()": {
+					"details": "Implementation of the ERC1822 {proxiableUUID} function. This returns the storage slot used by the implementation. It is used to validate the implementation's compatibility when performing an upgrade. IMPORTANT: A proxy pointing at a proxiable contract should not be considered proxiable itself, because this risks bricking a proxy that upgrades to it, by delegating to itself until out of gas. Thus it is critical that this function revert if invoked through a proxy. This is guaranteed by the `notDelegated` modifier."
+				},
 				"renounceOwnership()": {
 					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
 				},
 				"transferOwnership(address)": {
 					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				},
+				"upgradeToAndCall(address,bytes)": {
+					"custom:oz-upgrades-unsafe-allow-reachable": "delegatecall",
+					"details": "Upgrade the implementation of the proxy to `newImplementation`, and subsequently execute the function call encoded in `data`. Calls {_authorizeUpgrade}. Emits an {Upgraded} event."
 				}
 			},
 			"version": 1
@@ -760,7 +875,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/SFTFactory.sol": "KnowledgeFi"
+			"contracts/KnowledgeFi.sol": "KnowledgeFi"
 		},
 		"evmVersion": "shanghai",
 		"libraries": {},
@@ -769,17 +884,73 @@
 		},
 		"optimizer": {
 			"enabled": true,
-			"runs": 100
+			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
-		"@openzeppelin/contracts/access/Ownable.sol": {
-			"keccak256": "0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb",
+		"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": {
+			"keccak256": "0xc163fcf9bb10138631a9ba5564df1fa25db9adff73bd9ee868a8ae1858fe093a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://8ed324d3920bb545059d66ab97d43e43ee85fd3bd52e03e401f020afb0b120f6",
-				"dweb:/ipfs/QmfEckWLmZkDDcoWrkEvMWhms66xwTLff9DDhegYpvHo1a"
+				"bzz-raw://9706d43a0124053d9880f6e31a59f31bc0a6a3dc1acd66ce0a16e1111658c5f6",
+				"dweb:/ipfs/QmUFmfowzkRwGtDu36cXV9SPTBHJ3n7dG9xQiK5B28jTf2"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
+			"keccak256": "0x631188737069917d2f909d29ce62c4d48611d326686ba6683e26b72a23bfac0b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7a61054ae84cd6c4d04c0c4450ba1d6de41e27e0a2c4f1bcdf58f796b401c609",
+				"dweb:/ipfs/QmUvtdp7X1mRVyC3CsHrtPbgoqWaXHp3S1ZR24tpAQYJWM"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol": {
+			"keccak256": "0x3f13b947637c4969c0644cab4ef399cdc4b67f101463b8775c5a43b118558e53",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c6683e6ade6985d394d32baaef5eea0d8b9ff0b3eca86ae413d6cdde114a9930",
+				"dweb:/ipfs/QmdBE8T1BTddZxpdECMsb3KiCFyjNWmxcCddYrWFTXmWPj"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
+			"keccak256": "0xdbef5f0c787055227243a7318ef74c8a5a1108ca3a07f2b3a00ef67769e1e397",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://08e39f23d5b4692f9a40803e53a8156b72b4c1f9902a88cd65ba964db103dab9",
+				"dweb:/ipfs/QmPKn6EYDgpga7KtpkA8wV2yJCYGMtc9K4LkJfhKX2RVSV"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol": {
+			"keccak256": "0xb44e086e941292cdc7f440de51478493894ef0b1aeccb0c4047445919f667f74",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://942dad22fbdc1669f025540ba63aa3ccfad5f8458fc5d4525b31ebf272e7af45",
+				"dweb:/ipfs/Qmdo4X2M82aM3AMoW2kf2jhYkSCyC4T1pHNd6obdsDFnAB"
+			]
+		},
+		"@openzeppelin/contracts/interfaces/draft-IERC1822.sol": {
+			"keccak256": "0x2a1f9944df2015c081d89cd41ba22ffaf10aa6285969f0dc612b235cc448999c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ef381843676aec64421200ee85eaa0b1356a35f28b9fc67e746a6bbb832077d9",
+				"dweb:/ipfs/QmY8aorMYA2TeTCnu6ejDjzb4rW4t7TCtW4GZ6LoxTFm7v"
+			]
+		},
+		"@openzeppelin/contracts/proxy/ERC1967/ERC1967Utils.sol": {
+			"keccak256": "0x06a78f9b3ee3e6d0eb4e4cd635ba49960bea34cac1db8c0a27c75f2319f1fd65",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://547d21aa17f4f3f1a1a7edf7167beff8dd9496a0348d5588f15cc8a4b29d052a",
+				"dweb:/ipfs/QmT16JtRQSWNpLo9W23jr6CzaMuTAcQcjJJcdRd8HLJ6cE"
+			]
+		},
+		"@openzeppelin/contracts/proxy/beacon/IBeacon.sol": {
+			"keccak256": "0xc59a78b07b44b2cf2e8ab4175fca91e8eca1eee2df7357b8d2a8833e5ea1f64c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5aa4f07e65444784c29cd7bfcc2341b34381e4e5b5da9f0c5bd00d7f430e66fa",
+				"dweb:/ipfs/QmWRMh4Q9DpaU9GvsiXmDdoNYMyyece9if7hnfLz7uqzWM"
 			]
 		},
 		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
@@ -790,20 +961,20 @@
 				"dweb:/ipfs/Qmau6x4Ns9XdyynRCNNp3RhLqijJjFm7z5fyZazfYFGYdq"
 			]
 		},
-		"@openzeppelin/contracts/utils/Context.sol": {
-			"keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
+		"@openzeppelin/contracts/utils/Address.sol": {
+			"keccak256": "0xaf28a975a78550e45f65e559a3ad6a5ad43b9b8a37366999abd1b7084eb70721",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12",
-				"dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF"
+				"bzz-raw://b7bd24e224f67f65bfadf85dc2929fa965456bb2415478bd0125471b5ce35245",
+				"dweb:/ipfs/QmRaydGr8BTHs1kvaZfsNU69pKzUAGFrvABn1KiRSbE51y"
 			]
 		},
-		"@openzeppelin/contracts/utils/ReentrancyGuard.sol": {
-			"keccak256": "0xf980daa263b661ab8ddee7d4fd833c7da7e7995e2c359ff1f17e67e4112f2236",
+		"@openzeppelin/contracts/utils/StorageSlot.sol": {
+			"keccak256": "0x32ba59b4b7299237c8ba56319110989d7978a039faf754793064e967e5894418",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://7448ab095d6940130bcf76ba47a2eab14148c83119523b93dd89f6d84edd6c02",
-				"dweb:/ipfs/QmawrZ4voKQjH3oomXT3Kuheb3Mnmo2VvVpxg8Ne5UJUrd"
+				"bzz-raw://1ae50c8b562427df610cc4540c9bf104acca7ef8e2dcae567ae7e52272281e9c",
+				"dweb:/ipfs/QmTHiadFCSJUPpRjNegc5SahmeU8bAoY8i9Aq6tVscbcKR"
 			]
 		},
 		"@openzeppelin/contracts/utils/Strings.sol": {
@@ -854,30 +1025,6 @@
 				"dweb:/ipfs/QmNqYc8To2NdnpP6E1tGz7t6A7beuENde5yovwov5pW1fA"
 			]
 		},
-		"@solvprotocol/erc-3525/ERC3525.sol": {
-			"keccak256": "0xdb06f2cb8c31b341fe867e41978007c2afb51ef58dab1d790a502ee3b527bdeb",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://7dff0a3cea5381e74a94250289fa3a0c1785d791315107e9ec2008bfbffba122",
-				"dweb:/ipfs/QmRH7xSBT5SxzdBCv6u35vN99L1uSch4WP6ju6SNubKjxq"
-			]
-		},
-		"@solvprotocol/erc-3525/ERC3525SlotApprovable.sol": {
-			"keccak256": "0x8618cf9ccf9fad16d5798ef6e6403cc2f67b8ef947c8cb03aa40d295502c7744",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://777523f1e07f46beedd110fc8f2e88eaa22e48bd51a1577bf092c77da0c87d84",
-				"dweb:/ipfs/QmSTyrxGPL226PxnqXGUhqKT7SRprWDF17pVP8w8yPa98t"
-			]
-		},
-		"@solvprotocol/erc-3525/ERC3525SlotEnumerable.sol": {
-			"keccak256": "0x7552d289d5a59b6e9250bcd0a0036d5fe1c949bb6259874677cb91dbdf9f3102",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://61cdef208c82d4d39b3b81b557fb7c3b8e484610f376c8ff7cffa5ea86a672e8",
-				"dweb:/ipfs/QmSw9SRe1RDtLUaKiAct9ADQf27e5Gvk6D88ufc64RjpnH"
-			]
-		},
 		"@solvprotocol/erc-3525/IERC3525.sol": {
 			"keccak256": "0x901207b3c61837eeae24c25271533a0dd684745dad978235053fe4d9d86a9ded",
 			"license": "MIT",
@@ -886,36 +1033,12 @@
 				"dweb:/ipfs/QmeFMHVXcMzZ7PBY13m9wPfeuYqah7wyscKfyR4C7MogDZ"
 			]
 		},
-		"@solvprotocol/erc-3525/IERC3525Receiver.sol": {
-			"keccak256": "0x786383869053c8390f7d8425750c9d1d2f96ab524374f56b986414271e8b1c9d",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://8b2fb8260880b4bfd92733e5ae68393f9ca283683e6ae1cb67d5df750ec8e626",
-				"dweb:/ipfs/QmeSokK66DCLeonJbz9qKGRrfS9pAje8VqDJRkoCfGN28M"
-			]
-		},
 		"@solvprotocol/erc-3525/IERC721.sol": {
 			"keccak256": "0x3553276ca123c09e0ebc3232afb0452dff1d2841e767e221deffe0633867f5e8",
 			"license": "MIT",
 			"urls": [
 				"bzz-raw://7bed27e2b7297a37d632fe2088796626181824c9148b2893a30b447d87dd7312",
 				"dweb:/ipfs/QmUbLTwJDzopZam1TVqkcWEd4nXmVkwrH2Yb6VTFT4DcTe"
-			]
-		},
-		"@solvprotocol/erc-3525/IERC721Receiver.sol": {
-			"keccak256": "0x1b5f60bb2c8e2915ba219bd9916af6328ae8da2ca2daa7e5a6fc674277fb8ab1",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://3e57afce81697d811c0c81ecaba51c164b6da1fffad3d433cc9e98c5ac8e9b25",
-				"dweb:/ipfs/QmXbTFQ9WVnaxuER54djUyia4pHgw637FJKBh1xKQgRwgi"
-			]
-		},
-		"@solvprotocol/erc-3525/extensions/IERC3525Metadata.sol": {
-			"keccak256": "0x73d0c053478063ca4345ccc32e0e069ed14636e8f7dcffd27a3a5d16e5df1015",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://e926678863bc58d9267d79687e8d090ecebd348cd313237654f75fead1a6db65",
-				"dweb:/ipfs/QmWnxuw7iq8ikw4uBsKXszpnXcFTSr11DhTRg7MpFrdBB2"
 			]
 		},
 		"@solvprotocol/erc-3525/extensions/IERC3525SlotApprovable.sol": {
@@ -942,52 +1065,28 @@
 				"dweb:/ipfs/QmXfhoS6qzqWpWRGoTc2tdCf88MnGX5eCt4nfV2qun7BEY"
 			]
 		},
-		"@solvprotocol/erc-3525/extensions/IERC721Metadata.sol": {
-			"keccak256": "0xb3e7cb4572ee9649f15fd17dc3865c8a4a47f92679233cc68e578c36f45ac5e1",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://b3141ce4e2518b3060e258e6db17d45521fc135776674498bc75b269fc997b82",
-				"dweb:/ipfs/QmTDjiZMXXFtLjn5RLy1abU4ugMDkEC7uzdejDjgGBMHV6"
-			]
-		},
-		"@solvprotocol/erc-3525/periphery/interface/IERC3525MetadataDescriptor.sol": {
-			"keccak256": "0xc297d848cece83ff6d6d67e6f884667425445776b3b5c8fd185c4a01a2f79de7",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://a498945e761792cbf32be30eb8f512b214260a55b56e325c2611e8caa23978bf",
-				"dweb:/ipfs/QmZBr8aqYyyErUqHdGDhyZXyj4RUk2G1fsLfRtwdEC1Wf3"
-			]
-		},
-		"contracts/IKnowledgeFi.sol": {
-			"keccak256": "0xbeb39a2eadcd96121504c84789ce41ce9e34b6821f56afd847717c13fa442fb6",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://7c66b0cb73ad39a8288d83efcfac8adfea0e305334b6dfe62862e9fc8b098be7",
-				"dweb:/ipfs/QmTE4RRSFT1Tq4oHKbzC1433SN8AcsB8ArN4fw24wLwx3N"
-			]
-		},
 		"contracts/ISFT.sol": {
-			"keccak256": "0x276fafcf41c6232ad371ee4fe1bce8d71ac34ca7e6430e84950189a6598590ee",
+			"keccak256": "0x8f014a28343120206390f9e63acfc5c14c4abb478312fb17bb29329b6362925b",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://67069f3651f67851edb9669875bced76dce84b262007de9194a8db06511278ce",
-				"dweb:/ipfs/QmVUR8q316gbZzZCU6ek5qrn6A28RXhz53q1qfbL4fH9f4"
+				"bzz-raw://6fb00553d65860bff88a6b3ce4011424dc3453a9e5c71509e600bb4c33ebfb0a",
+				"dweb:/ipfs/Qmdt9x2cB3yB8h1GzjLVDTxLfqeq8swREDwxsJxbnqgimC"
 			]
 		},
-		"contracts/SFT.sol": {
-			"keccak256": "0xd2483a14f2136a106a927398f62fd7f0ce579b6770bd346e8805a9c656d561c9",
+		"contracts/ISFTFactory.sol": {
+			"keccak256": "0xcc3ce349834fdf0686e2716932f90b81cc6366fcd1e71a741bcb20deaff2ca0d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5a7cf23650389a4f88b4d589cb2f152cc480db226c734919694785c612a6419b",
-				"dweb:/ipfs/QmcN21XSkuM4h8YBCWPdMCPsJPdE7oEYo4HuVPmgPsAr6g"
+				"bzz-raw://6ae53b9f913d005112b85689e5e8c4d9a1a169ff69e27f458fbe052c1b6493fa",
+				"dweb:/ipfs/QmbJsaCALsuJij99ZohR21LCz1G97RT6xSsk3WmtFfhuAX"
 			]
 		},
-		"contracts/SFTFactory.sol": {
-			"keccak256": "0xa7f893eedd11ef8ff621c166d805e3982cfb21ada78cff931d0acd060c053a02",
+		"contracts/KnowledgeFi.sol": {
+			"keccak256": "0xe39edc2eab71718127f60e1ad920f470cfeb7c2e54a25cd0f2782fa8d0bf5265",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0e165b325947e94090d5b0aed266c27daf3a1500ce1fdfb321cd7033f04ed256",
-				"dweb:/ipfs/QmZ5HcRueHk1x9RScoReyXZdnh266iRP63jxJdLVGHkhav"
+				"bzz-raw://b867c4488ddb288ac18a32c0e2f2a33e5a239b112746b773b8769d333c3a48c1",
+				"dweb:/ipfs/QmPhLMJKotFJCGWM8tngG91FE1NVkjBjtgeJnyp5KyzxBG"
 			]
 		}
 	},
