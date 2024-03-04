@@ -325,6 +325,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "bool",
+						"name": "status",
+						"type": "bool"
+					}
+				],
+				"name": "setMintStatus",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "symbol",
 				"outputs": [
@@ -547,7 +560,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -602,11 +615,11 @@
 			]
 		},
 		"contracts/KFI.sol": {
-			"keccak256": "0x3a4eba2a15588ebd5b4b1335659ea103cea054c73b2701c50b5d8b691ac3bcc0",
+			"keccak256": "0xc2a08741f46d0ea390b93366f51e8ac2346c3ea3b330b359cac5e7ba5f25236d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://38f697b24e1362610b832f3f6773ac5578453bceefdcaf9a157e19611201472b",
-				"dweb:/ipfs/QmYZEoixV28itSu9ts34e3S7P8iRq95iXk3UTeAXgh3RNh"
+				"bzz-raw://9b04ff215cc894ce6f10e271790e8bd93edc8c2ec14b374b29602950629d311d",
+				"dweb:/ipfs/QmYUMYtTUnyqwZrcAgXMjXdnkfU68jpCmDRiqrdY5t9QdE"
 			]
 		}
 	},
